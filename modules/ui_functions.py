@@ -16,7 +16,10 @@
 
 # MAIN FILE
 # ///////////////////////////////////////////////////////////////
+import random
+
 from PyQt6 import QtGui, QtCore
+from PySide6.QtCore import QTimer, Signal
 from PySide6.QtWidgets import QTableWidget
 
 from main import *
@@ -27,6 +30,7 @@ GLOBAL_STATE = False
 GLOBAL_TITLE_BAR = True
 
 class UIFunctions(MainWindow):
+
     # MAXIMIZE/RESTORE
     # ///////////////////////////////////////////////////////////////
     def maximize_restore(self):
@@ -116,7 +120,7 @@ class UIFunctions(MainWindow):
                 widthExtended = standard
                 # RESET BTN
                 self.ui.toggleLeftBox.setStyleSheet(style.replace(color, ''))
-                
+
         UIFunctions.start_box_animation(self, width, widthRightBox, "left")
 
     # TOGGLE RIGHT BOX
@@ -150,7 +154,7 @@ class UIFunctions(MainWindow):
 
     def start_box_animation(self, left_box_width, right_box_width, direction):
         right_width = 0
-        left_width = 0 
+        left_width = 0
 
         # Check values
         if left_box_width == 0 and direction == "left":
@@ -161,16 +165,16 @@ class UIFunctions(MainWindow):
         if right_box_width == 0 and direction == "right":
             right_width = 240
         else:
-            right_width = 0       
+            right_width = 0
 
-        # ANIMATION LEFT BOX        
+        # ANIMATION LEFT BOX
         self.left_box = QPropertyAnimation(self.ui.extraLeftBox, b"minimumWidth")
         self.left_box.setDuration(Settings.TIME_ANIMATION)
         self.left_box.setStartValue(left_box_width)
         self.left_box.setEndValue(left_width)
         self.left_box.setEasingCurve(QEasingCurve.InOutQuart)
 
-        # ANIMATION RIGHT BOX        
+        # ANIMATION RIGHT BOX
         self.right_box = QPropertyAnimation(self.ui.extraRightBox, b"minimumWidth")
         self.right_box.setDuration(Settings.TIME_ANIMATION)
         self.right_box.setStartValue(right_box_width)
@@ -286,41 +290,6 @@ class UIFunctions(MainWindow):
 
     # START - BUSINESS DEFINITIONS
     # ///////////////////////////////////////////////////////////////
-    # 刷新备选池列表
-    def refresh_tbw_alternative(self):
-        # 获取最新分时价格数据
-        while True:
-            try:
-                self.model = QStandardItemModel(0, 0, self)
-
-                self.model.setHorizontalHeaderItem(0, QStandardItem("代码"))
-                self.model.setHorizontalHeaderItem(1, QStandardItem("名字"))
-                self.model.setHorizontalHeaderItem(2, QStandardItem("开盘"))
-                self.model.setHorizontalHeaderItem(3, QStandardItem("现价"))
-                self.model.setHorizontalHeaderItem(4, QStandardItem("涨幅"))
-                self.model.setHorizontalHeaderItem(5, QStandardItem("成交量"))
-                self.model.setHorizontalHeaderItem(6, QStandardItem("涨停价"))
-                self.model.setHorizontalHeaderItem(7, QStandardItem("跌停价"))
-
-                for stockCode in common_variables.stockRankList[0:50]:
-                    # item = QStandardItem('({}, {})'.format(common_variables.stockRank100Dict[stockCode]['limit_high'], column))
-                    self.model.appendRow([QStandardItem(common_variables.stockRank100Dict[stockCode[0]]['code']),
-                                          QStandardItem(common_variables.stockRank100Dict[stockCode[0]]['name']),
-                                          QStandardItem(str(common_variables.stockRank100Dict[stockCode[0]]['open'])),
-                                          QStandardItem(str(common_variables.stockRank100Dict[stockCode[0]]['now'])),
-                                          QStandardItem(
-                                              str(common_variables.stockRank100Dict[stockCode[0]]['change_range'])),
-                                          QStandardItem(str(common_variables.stockRank100Dict[stockCode[0]]['volume'])),
-                                          QStandardItem(str(common_variables.stockRank100Dict[stockCode[0]]['涨停价'])),
-                                          QStandardItem(str(common_variables.stockRank100Dict[stockCode[0]]['跌停价'])),
-                                          ])
-
-                # 将数据模型绑定到QTableView
-                self.ui.tbv_alternative.setModel(self.model)
-                time.sleep(10)
-            except Exception as ex:
-                log.error('UI TopN刷新错误:' + ex.__str__())
-
 
     # ///////////////////////////////////////////////////////////////
     # END - BUSINESS DEFINITIONS

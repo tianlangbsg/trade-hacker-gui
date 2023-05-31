@@ -32,6 +32,27 @@ def getByDate(date):
     return tradeRecordDict
 
 
+# 查询当天全部交易记录详情
+def getTodayRecords():
+    # 定义要执行的SQL语句
+    sql = "SELECT *,trade_price*trade_amount AS money FROM trade_record WHERE DATE_FORMAT(timestamp, '%Y%m%d')=DATE_FORMAT(NOW(), '%Y%m%d') ORDER BY TIMESTAMP ASC;"
+    # 取到查询结果
+    records = mysqlUtil.query(sql)
+    tradeRecordDict = {}
+    for dataSet in records:
+        stockData = {}
+        stockData['id'] = dataSet[0]
+        stockData['stock_code'] = dataSet[1]
+        stockData['stock_name'] = dataSet[2]
+        stockData['detail'] = dataSet[3]
+        stockData['trade_price'] = dataSet[4]
+        stockData['trade_amount'] = dataSet[5]
+        stockData['timestamp'] = dataSet[6]
+        stockData['trade_type'] = dataSet[7]
+        stockData['money'] = dataSet[8]
+        tradeRecordDict[dataSet[1]] = stockData
+    return tradeRecordDict
+
 # 查询指定日期全部股票
 def getStocksByDate(date, tradeType):
     # 定义要执行的SQL语句

@@ -1,24 +1,34 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'maingnxZcz.ui'
+## Form generated from reading UI file 'ui_main.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.0.2
+## Created by: Qt User Interface Compiler version 6.5.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide6.QtCore import *
-from PySide6.QtGui import *
-from PySide6.QtWidgets import *
-
-from . resources_rc import *
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QAbstractItemView, QAbstractScrollArea, QApplication, QCheckBox,
+    QComboBox, QCommandLinkButton, QFrame, QGridLayout,
+    QHBoxLayout, QHeaderView, QLabel, QLineEdit,
+    QMainWindow, QPlainTextEdit, QPushButton, QRadioButton,
+    QScrollArea, QScrollBar, QSizePolicy, QSlider,
+    QStackedWidget, QTableView, QTableWidget, QTableWidgetItem,
+    QTextBrowser, QTextEdit, QVBoxLayout, QWidget)
+import resources_rc
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(940, 560)
+        MainWindow.resize(940, 628)
         MainWindow.setMinimumSize(QSize(940, 560))
         self.styleSheet = QWidget(MainWindow)
         self.styleSheet.setObjectName(u"styleSheet")
@@ -1027,6 +1037,98 @@ class Ui_MainWindow(object):
         self.verticalLayout_15.setSpacing(0)
         self.verticalLayout_15.setObjectName(u"verticalLayout_15")
         self.verticalLayout_15.setContentsMargins(10, 10, 10, 10)
+        self.gridLayout_5 = QGridLayout()
+        self.gridLayout_5.setObjectName(u"gridLayout_5")
+        self.lbl_market_value_value = QLabel(self.pagesContainer)
+        self.lbl_market_value_value.setObjectName(u"lbl_market_value_value")
+        sizePolicy3 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.lbl_market_value_value.sizePolicy().hasHeightForWidth())
+        self.lbl_market_value_value.setSizePolicy(sizePolicy3)
+
+        self.gridLayout_5.addWidget(self.lbl_market_value_value, 0, 5, 1, 1)
+
+        self.lbl_balance = QLabel(self.pagesContainer)
+        self.lbl_balance.setObjectName(u"lbl_balance")
+        sizePolicy3.setHeightForWidth(self.lbl_balance.sizePolicy().hasHeightForWidth())
+        self.lbl_balance.setSizePolicy(sizePolicy3)
+
+        self.gridLayout_5.addWidget(self.lbl_balance, 0, 0, 1, 1)
+
+        self.lbl_profit = QLabel(self.pagesContainer)
+        self.lbl_profit.setObjectName(u"lbl_profit")
+        sizePolicy3.setHeightForWidth(self.lbl_profit.sizePolicy().hasHeightForWidth())
+        self.lbl_profit.setSizePolicy(sizePolicy3)
+
+        self.gridLayout_5.addWidget(self.lbl_profit, 0, 6, 1, 1)
+
+        self.lbl_available_value = QLabel(self.pagesContainer)
+        self.lbl_available_value.setObjectName(u"lbl_available_value")
+        sizePolicy3.setHeightForWidth(self.lbl_available_value.sizePolicy().hasHeightForWidth())
+        self.lbl_available_value.setSizePolicy(sizePolicy3)
+
+        self.gridLayout_5.addWidget(self.lbl_available_value, 0, 3, 1, 1)
+
+        self.lbl_available = QLabel(self.pagesContainer)
+        self.lbl_available.setObjectName(u"lbl_available")
+        sizePolicy3.setHeightForWidth(self.lbl_available.sizePolicy().hasHeightForWidth())
+        self.lbl_available.setSizePolicy(sizePolicy3)
+
+        self.gridLayout_5.addWidget(self.lbl_available, 0, 2, 1, 1)
+
+        self.lbl_today_profit_value = QLabel(self.pagesContainer)
+        self.lbl_today_profit_value.setObjectName(u"lbl_today_profit_value")
+        sizePolicy3.setHeightForWidth(self.lbl_today_profit_value.sizePolicy().hasHeightForWidth())
+        self.lbl_today_profit_value.setSizePolicy(sizePolicy3)
+
+        self.gridLayout_5.addWidget(self.lbl_today_profit_value, 0, 9, 1, 1)
+
+        self.lbl_market_value = QLabel(self.pagesContainer)
+        self.lbl_market_value.setObjectName(u"lbl_market_value")
+        sizePolicy3.setHeightForWidth(self.lbl_market_value.sizePolicy().hasHeightForWidth())
+        self.lbl_market_value.setSizePolicy(sizePolicy3)
+
+        self.gridLayout_5.addWidget(self.lbl_market_value, 0, 4, 1, 1)
+
+        self.lbl_profit_value = QLabel(self.pagesContainer)
+        self.lbl_profit_value.setObjectName(u"lbl_profit_value")
+        sizePolicy3.setHeightForWidth(self.lbl_profit_value.sizePolicy().hasHeightForWidth())
+        self.lbl_profit_value.setSizePolicy(sizePolicy3)
+
+        self.gridLayout_5.addWidget(self.lbl_profit_value, 0, 7, 1, 1)
+
+        self.lbl_balance_value = QLabel(self.pagesContainer)
+        self.lbl_balance_value.setObjectName(u"lbl_balance_value")
+        sizePolicy3.setHeightForWidth(self.lbl_balance_value.sizePolicy().hasHeightForWidth())
+        self.lbl_balance_value.setSizePolicy(sizePolicy3)
+
+        self.gridLayout_5.addWidget(self.lbl_balance_value, 0, 1, 1, 1)
+
+        self.lbl_today_profit = QLabel(self.pagesContainer)
+        self.lbl_today_profit.setObjectName(u"lbl_today_profit")
+        sizePolicy3.setHeightForWidth(self.lbl_today_profit.sizePolicy().hasHeightForWidth())
+        self.lbl_today_profit.setSizePolicy(sizePolicy3)
+
+        self.gridLayout_5.addWidget(self.lbl_today_profit, 0, 8, 1, 1)
+
+        self.lbl_today_profit_rate = QLabel(self.pagesContainer)
+        self.lbl_today_profit_rate.setObjectName(u"lbl_today_profit_rate")
+        sizePolicy3.setHeightForWidth(self.lbl_today_profit_rate.sizePolicy().hasHeightForWidth())
+        self.lbl_today_profit_rate.setSizePolicy(sizePolicy3)
+
+        self.gridLayout_5.addWidget(self.lbl_today_profit_rate, 0, 10, 1, 1)
+
+        self.lbl_today_profit_rate_value = QLabel(self.pagesContainer)
+        self.lbl_today_profit_rate_value.setObjectName(u"lbl_today_profit_rate_value")
+        sizePolicy3.setHeightForWidth(self.lbl_today_profit_rate_value.sizePolicy().hasHeightForWidth())
+        self.lbl_today_profit_rate_value.setSizePolicy(sizePolicy3)
+
+        self.gridLayout_5.addWidget(self.lbl_today_profit_rate_value, 0, 11, 1, 1)
+
+
+        self.verticalLayout_15.addLayout(self.gridLayout_5)
+
         self.stackedWidget = QStackedWidget(self.pagesContainer)
         self.stackedWidget.setObjectName(u"stackedWidget")
         self.stackedWidget.setStyleSheet(u"background: transparent;")
@@ -1078,11 +1180,11 @@ class Ui_MainWindow(object):
 
         self.txt_info = QTextBrowser(self.home)
         self.txt_info.setObjectName(u"txt_info")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.txt_info.sizePolicy().hasHeightForWidth())
-        self.txt_info.setSizePolicy(sizePolicy3)
+        sizePolicy4 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.txt_info.sizePolicy().hasHeightForWidth())
+        self.txt_info.setSizePolicy(sizePolicy4)
         self.txt_info.setMinimumSize(QSize(800, 350))
         self.txt_info.setFont(font)
         self.txt_info.setStyleSheet(u"color:#5f5f5f;")
@@ -1231,7 +1333,7 @@ class Ui_MainWindow(object):
         self.scrollArea.setWidgetResizable(True)
         self.scrollAreaWidgetContents = QWidget()
         self.scrollAreaWidgetContents.setObjectName(u"scrollAreaWidgetContents")
-        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 274, 218))
+        self.scrollAreaWidgetContents.setGeometry(QRect(0, 0, 348, 218))
         self.scrollAreaWidgetContents.setStyleSheet(u" QScrollBar:vertical {\n"
 "	border: none;\n"
 "    background: rgb(52, 59, 72);\n"
@@ -1364,8 +1466,8 @@ class Ui_MainWindow(object):
         __qtablewidgetitem23 = QTableWidgetItem()
         self.tableWidget.setItem(0, 3, __qtablewidgetitem23)
         self.tableWidget.setObjectName(u"tableWidget")
-        sizePolicy3.setHeightForWidth(self.tableWidget.sizePolicy().hasHeightForWidth())
-        self.tableWidget.setSizePolicy(sizePolicy3)
+        sizePolicy4.setHeightForWidth(self.tableWidget.sizePolicy().hasHeightForWidth())
+        self.tableWidget.setSizePolicy(sizePolicy4)
         palette = QPalette()
         brush = QBrush(QColor(221, 221, 221, 255))
         brush.setStyle(Qt.SolidPattern)
@@ -1433,34 +1535,31 @@ class Ui_MainWindow(object):
         self.stackedWidget.addWidget(self.widgets)
         self.trade = QWidget()
         self.trade.setObjectName(u"trade")
-        self.verticalLayout_20 = QVBoxLayout(self.trade)
-        self.verticalLayout_20.setObjectName(u"verticalLayout_20")
-        self.lbl_alternative = QLabel(self.trade)
-        self.lbl_alternative.setObjectName(u"lbl_alternative")
-        sizePolicy4 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.lbl_alternative.sizePolicy().hasHeightForWidth())
-        self.lbl_alternative.setSizePolicy(sizePolicy4)
-
-        self.verticalLayout_20.addWidget(self.lbl_alternative)
-
-        self.tbv_alternative = QTableView(self.trade)
-        self.tbv_alternative.setObjectName(u"tbv_alternative")
-
-        self.verticalLayout_20.addWidget(self.tbv_alternative)
-
+        self.horizontalLayout_7 = QHBoxLayout(self.trade)
+        self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
         self.lbl_trade_record = QLabel(self.trade)
         self.lbl_trade_record.setObjectName(u"lbl_trade_record")
-        sizePolicy4.setHeightForWidth(self.lbl_trade_record.sizePolicy().hasHeightForWidth())
-        self.lbl_trade_record.setSizePolicy(sizePolicy4)
+        sizePolicy3.setHeightForWidth(self.lbl_trade_record.sizePolicy().hasHeightForWidth())
+        self.lbl_trade_record.setSizePolicy(sizePolicy3)
 
-        self.verticalLayout_20.addWidget(self.lbl_trade_record)
+        self.horizontalLayout_7.addWidget(self.lbl_trade_record)
 
         self.tbv_trade_record = QTableView(self.trade)
         self.tbv_trade_record.setObjectName(u"tbv_trade_record")
 
-        self.verticalLayout_20.addWidget(self.tbv_trade_record)
+        self.horizontalLayout_7.addWidget(self.tbv_trade_record)
+
+        self.lbl_alternative = QLabel(self.trade)
+        self.lbl_alternative.setObjectName(u"lbl_alternative")
+        sizePolicy3.setHeightForWidth(self.lbl_alternative.sizePolicy().hasHeightForWidth())
+        self.lbl_alternative.setSizePolicy(sizePolicy3)
+
+        self.horizontalLayout_7.addWidget(self.lbl_alternative)
+
+        self.tbv_alternative = QTableView(self.trade)
+        self.tbv_alternative.setObjectName(u"tbv_alternative")
+
+        self.horizontalLayout_7.addWidget(self.tbv_alternative)
 
         self.stackedWidget.addWidget(self.trade)
 
@@ -1663,6 +1762,18 @@ class Ui_MainWindow(object):
         self.closeAppBtn.setToolTip(QCoreApplication.translate("MainWindow", u"Close", None))
 #endif // QT_CONFIG(tooltip)
         self.closeAppBtn.setText("")
+        self.lbl_market_value_value.setText("")
+        self.lbl_balance.setText(QCoreApplication.translate("MainWindow", u"\u4f59\u989d", None))
+        self.lbl_profit.setText(QCoreApplication.translate("MainWindow", u"\u603b\u76c8\u4e8f", None))
+        self.lbl_available_value.setText("")
+        self.lbl_available.setText(QCoreApplication.translate("MainWindow", u"\u53ef\u7528", None))
+        self.lbl_today_profit_value.setText("")
+        self.lbl_market_value.setText(QCoreApplication.translate("MainWindow", u"\u53c2\u8003\u5e02\u503c", None))
+        self.lbl_profit_value.setText("")
+        self.lbl_balance_value.setText("")
+        self.lbl_today_profit.setText(QCoreApplication.translate("MainWindow", u"\u5f53\u65e5\u76c8\u4e8f", None))
+        self.lbl_today_profit_rate.setText(QCoreApplication.translate("MainWindow", u"\u5f53\u65e5\u76c8\u4e8f\u7387", None))
+        self.lbl_today_profit_rate_value.setText("")
         self.btn_start.setText(QCoreApplication.translate("MainWindow", u"Start", None))
         self.btn_stop.setText(QCoreApplication.translate("MainWindow", u"Stop", None))
         self.txt_info.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
@@ -1739,13 +1850,12 @@ class Ui_MainWindow(object):
         ___qtablewidgetitem23.setText(QCoreApplication.translate("MainWindow", u"Line", None));
         self.tableWidget.setSortingEnabled(__sortingEnabled)
 
-        self.lbl_alternative.setText(QCoreApplication.translate("MainWindow", u"\u5907\u9009\u6c60", None))
         self.lbl_trade_record.setText(QCoreApplication.translate("MainWindow", u"\u4ea4\u6613\u8bb0\u5f55", None))
+        self.lbl_alternative.setText(QCoreApplication.translate("MainWindow", u"\u5907\u9009\u6c60", None))
         self.btn_message.setText(QCoreApplication.translate("MainWindow", u"Message", None))
         self.btn_print.setText(QCoreApplication.translate("MainWindow", u"Print", None))
         self.btn_logout.setText(QCoreApplication.translate("MainWindow", u"Logout", None))
         self.creditsLabel.setText(QCoreApplication.translate("MainWindow", u"trade-hacker", None))
         self.version.setText(QCoreApplication.translate("MainWindow", u"v1.0", None))
     # retranslateUi
-
 

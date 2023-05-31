@@ -1,0 +1,34 @@
+2023-05-31 16:28:36,438 - ERROR: UI TopN刷新错误:'600781'
+2023-05-31 17:13:21,901 - ERROR: UI 备选池刷新错误:'MainWindow' object has no attribute 'alternative_model'
+2023-05-31 17:22:25,489 - ERROR: UI 交易记录刷新错误:'PySide6.QtGui.QStandardItem.__init__' called with wrong argument types:
+  PySide6.QtGui.QStandardItem.__init__(datetime)
+Supported signatures:
+  PySide6.QtGui.QStandardItem.__init__()
+  PySide6.QtGui.QStandardItem.__init__(Union[PySide6.QtGui.QIcon, PySide6.QtGui.QPixmap], str)
+  PySide6.QtGui.QStandardItem.__init__(PySide6.QtGui.QStandardItem)
+  PySide6.QtGui.QStandardItem.__init__(int, int = 1)
+  PySide6.QtGui.QStandardItem.__init__(str)
+2023-05-31 17:22:27,493 - ERROR: UI 交易记录刷新错误:'PySide6.QtGui.QStandardItem.__init__' called with wrong argument types:
+  PySide6.QtGui.QStandardItem.__init__(datetime)
+Supported signatures:
+  PySide6.QtGui.QStandardItem.__init__()
+  PySide6.QtGui.QStandardItem.__init__(Union[PySide6.QtGui.QIcon, PySide6.QtGui.QPixmap], str)
+  PySide6.QtGui.QStandardItem.__init__(PySide6.QtGui.QStandardItem)
+  PySide6.QtGui.QStandardItem.__init__(int, int = 1)
+  PySide6.QtGui.QStandardItem.__init__(str)
+2023-05-31 17:22:29,428 - ERROR: UI 交易记录刷新错误:'PySide6.QtGui.QStandardItem.__init__' called with wrong argument types:
+  PySide6.QtGui.QStandardItem.__init__(datetime)
+Supported signatures:
+  PySide6.QtGui.QStandardItem.__init__()
+  PySide6.QtGui.QStandardItem.__init__(Union[PySide6.QtGui.QIcon, PySide6.QtGui.QPixmap], str)
+  PySide6.QtGui.QStandardItem.__init__(PySide6.QtGui.QStandardItem)
+  PySide6.QtGui.QStandardItem.__init__(int, int = 1)
+  PySide6.QtGui.QStandardItem.__init__(str)
+2023-05-31 17:23:15,142 - ERROR: UI 交易记录刷新错误:'PySide6.QtGui.QStandardItem.__init__' called with wrong argument types:
+  PySide6.QtGui.QStandardItem.__init__(datetime)
+Supported signatures:
+  PySide6.QtGui.QStandardItem.__init__()
+  PySide6.QtGui.QStandardItem.__init__(Union[PySide6.QtGui.QIcon, PySide6.QtGui.QPixmap], str)
+  PySide6.QtGui.QStandardItem.__init__(PySide6.QtGui.QStandardItem)
+  PySide6.QtGui.QStandardItem.__init__(int, int = 1)
+  PySide6.QtGui.QStandardItem.__init__(str)
