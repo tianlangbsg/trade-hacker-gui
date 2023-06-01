@@ -1,4 +1,5 @@
 # ///////////////////////////////////////////////////////////////
+import random
 import sys
 import os
 import platform
@@ -8,7 +9,7 @@ import platform
 import threading
 import time
 
-from PySide6.QtCore import Signal
+from PySide6.QtCore import Signal, QTimer
 from PySide6.QtGui import QStandardItem
 
 from modules import *
@@ -148,6 +149,8 @@ class MainWindow(QMainWindow):
             self.refresh_tbv_alternative()
             # 刷新当日交易记录
             self.refresh_tbv_trade_record()
+            # 刷新账户状态
+            self.refresh_account_status()
 
         if btnName == "btn_save":
             print("Save BTN clicked!")
@@ -217,8 +220,8 @@ class MainWindow(QMainWindow):
         self.ui.tbv_alternative.setModel(self.alternative_model)
 
         self.refresh_tbv_alternative_timer.timeout.connect(self.on_tbv_alternative_timeout)
-        # 定义刷新间隔1秒
-        self.refresh_tbv_alternative_timer.start(5000)
+        # 定义刷新间隔
+        self.refresh_tbv_alternative_timer.start(2000)
         # 关联刷新函数
         self.refresh_tbv_alternative_signal.connect(self.refresh_tbv_alternative_data)
 
@@ -228,37 +231,42 @@ class MainWindow(QMainWindow):
     def refresh_tbv_alternative_data(self):
         try:
             self.alternative_model.clear()
-            try:
-                self.alternative_model = QStandardItemModel(0, 0, self)
+            self.alternative_model = QStandardItemModel(0, 0, self)
 
-                self.alternative_model.setHorizontalHeaderItem(0, QStandardItem("代码"))
-                self.alternative_model.setHorizontalHeaderItem(1, QStandardItem("名字"))
-                self.alternative_model.setHorizontalHeaderItem(2, QStandardItem("开盘"))
-                self.alternative_model.setHorizontalHeaderItem(3, QStandardItem("现价"))
-                self.alternative_model.setHorizontalHeaderItem(4, QStandardItem("涨幅"))
-                self.alternative_model.setHorizontalHeaderItem(5, QStandardItem("成交量"))
-                self.alternative_model.setHorizontalHeaderItem(6, QStandardItem("涨停价"))
-                self.alternative_model.setHorizontalHeaderItem(7, QStandardItem("跌停价"))
+            self.alternative_model.setHorizontalHeaderItem(0, QStandardItem("代码"))
+            self.alternative_model.setHorizontalHeaderItem(1, QStandardItem("名字"))
+            self.alternative_model.setHorizontalHeaderItem(4, QStandardItem("涨幅"))
+            self.alternative_model.setHorizontalHeaderItem(5, QStandardItem("成交量"))
+            self.alternative_model.setHorizontalHeaderItem(2, QStandardItem("开盘"))
+            self.alternative_model.setHorizontalHeaderItem(3, QStandardItem("现价"))
+            self.alternative_model.setHorizontalHeaderItem(6, QStandardItem("卖一量"))
+            self.alternative_model.setHorizontalHeaderItem(7, QStandardItem("卖一金额（万）"))
+            self.alternative_model.setHorizontalHeaderItem(8, QStandardItem("卖二量"))
+            self.alternative_model.setHorizontalHeaderItem(9, QStandardItem("卖二金额（万）"))
+            self.alternative_model.setHorizontalHeaderItem(10, QStandardItem("卖三量"))
+            self.alternative_model.setHorizontalHeaderItem(11, QStandardItem("卖三金额（万）"))
 
-                for stockCode in common_variables.stockRankList[0:60]:
-                    # item = QStandardItem('({}, {})'.format(common_variables.stockRank100Dict[stockCode]['limit_high'], column))
-                    self.alternative_model.appendRow([QStandardItem(common_variables.stockRank100Dict[stockCode[0]]['code']),
-                                          QStandardItem(common_variables.stockRank100Dict[stockCode[0]]['name']),
-                                          QStandardItem(str(common_variables.stockRank100Dict[stockCode[0]]['open'])),
-                                          QStandardItem(str(common_variables.stockRank100Dict[stockCode[0]]['now'])),
-                                          QStandardItem(
-                                              str(common_variables.stockRank100Dict[stockCode[0]]['change_range'])),
-                                          QStandardItem(str(common_variables.stockRank100Dict[stockCode[0]]['volume'])),
-                                          QStandardItem(str(common_variables.stockRank100Dict[stockCode[0]]['涨停价'])),
-                                          QStandardItem(str(common_variables.stockRank100Dict[stockCode[0]]['跌停价'])),
-                                          ])
+            for stockCode in common_variables.stockRank100Dict.keys():
+                self.alternative_model.appendRow([QStandardItem(common_variables.stockRank100Dict[stockCode]['code']),
+                                      QStandardItem(common_variables.stockRank100Dict[stockCode]['name']),
+                                      QStandardItem(str(common_variables.stockRank100Dict[stockCode]['open'])),
+                                      QStandardItem(str(common_variables.stockRank100Dict[stockCode]['now'])),
+                                      QStandardItem(
+                                          str(common_variables.stockRank100Dict[stockCode]['change_range'])),
+                                      QStandardItem(str(common_variables.stockRank100Dict[stockCode]['volume'])),
+                                      QStandardItem(str(common_variables.stockRank100Dict[stockCode]['ask1_volume'])),
+                                      QStandardItem(str(int((float(common_variables.stockRank100Dict[stockCode]['ask1_volume'])*float(common_variables.stockRank100Dict[stockCode]['ask1']))/10000))),
+                                      QStandardItem(str(common_variables.stockRank100Dict[stockCode]['ask2_volume'])),
+                                      QStandardItem(str(int((float(common_variables.stockRank100Dict[stockCode]['ask2_volume'])*float(common_variables.stockRank100Dict[stockCode]['ask2']))/10000))),
+                                      QStandardItem(str(common_variables.stockRank100Dict[stockCode]['ask3_volume'])),
+                                      QStandardItem(str(int((float(common_variables.stockRank100Dict[stockCode]['ask3_volume']) * float(common_variables.stockRank100Dict[stockCode]['ask3'])) / 10000))),
+                                      ])
 
-                # 将数据模型绑定到QTableView
-                self.ui.tbv_alternative.setModel(self.alternative_model)
-            except Exception as ex:
-                log.error('UI 备选池刷新错误:' + ex.__str__())
+            # 将数据模型绑定到QTableView
+            self.ui.tbv_alternative.setModel(self.alternative_model)
         except Exception as ex:
             log.error('UI 备选池刷新错误:' + ex.__str__())
+
 
 
     # ///////////////////////////////////////////////////////////////
@@ -272,7 +280,7 @@ class MainWindow(QMainWindow):
 
         self.refresh_tbv_trade_record_timer.timeout.connect(self.on_tbv_trade_record_timeout)
         # 定义刷新间隔5秒
-        self.refresh_tbv_trade_record_timer.start(5000)
+        self.refresh_tbv_trade_record_timer.start(3000)
         # 关联刷新函数
         self.refresh_tbv_trade_record_signal.connect(self.refresh_tbv_trade_record_data)
 
@@ -282,39 +290,66 @@ class MainWindow(QMainWindow):
     def refresh_tbv_trade_record_data(self):
         try:
             self.records_model.clear()
-            try:
-                self.records_model = QStandardItemModel(0, 0, self)
+            self.records_model = QStandardItemModel(0, 0, self)
 
-                self.records_model.setHorizontalHeaderItem(0, QStandardItem("代码"))
-                self.records_model.setHorizontalHeaderItem(1, QStandardItem("名字"))
-                self.records_model.setHorizontalHeaderItem(2, QStandardItem("详情"))
-                self.records_model.setHorizontalHeaderItem(3, QStandardItem("成交价格"))
-                self.records_model.setHorizontalHeaderItem(4, QStandardItem("成交数量"))
-                self.records_model.setHorizontalHeaderItem(5, QStandardItem("成交时间"))
-                self.records_model.setHorizontalHeaderItem(6, QStandardItem("交易类型"))
-                self.records_model.setHorizontalHeaderItem(7, QStandardItem("成交金额"))
+            self.records_model.setHorizontalHeaderItem(0, QStandardItem("代码"))
+            self.records_model.setHorizontalHeaderItem(1, QStandardItem("名字"))
+            self.records_model.setHorizontalHeaderItem(2, QStandardItem("详情"))
+            self.records_model.setHorizontalHeaderItem(6, QStandardItem("交易类型"))
+            self.records_model.setHorizontalHeaderItem(3, QStandardItem("成交价格"))
+            self.records_model.setHorizontalHeaderItem(4, QStandardItem("成交数量"))
+            self.records_model.setHorizontalHeaderItem(5, QStandardItem("成交时间"))
+            self.records_model.setHorizontalHeaderItem(7, QStandardItem("成交金额"))
 
-                # 从数据库取得当天交易记录
-                tradeRecordDict = getTodayRecords()
+            # 从数据库取得当天交易记录
+            tradeRecordDict = getTodayRecords()
 
-                for key in tradeRecordDict.keys():
-                    self.records_model.appendRow([QStandardItem(tradeRecordDict[key]['stock_code']),
-                                          QStandardItem(tradeRecordDict[key]['stock_name']),
-                                          QStandardItem(tradeRecordDict[key]['detail']),
-                                          QStandardItem(tradeRecordDict[key]['trade_price']),
-                                          QStandardItem(tradeRecordDict[key]['trade_amount']),
-                                          QStandardItem(str(tradeRecordDict[key]['timestamp'])),
-                                          QStandardItem(tradeRecordDict[key]['trade_type']),
-                                          QStandardItem(str(tradeRecordDict[key]['money'])),
-                                          ])
+            for key in tradeRecordDict.keys():
+                self.records_model.appendRow([QStandardItem(tradeRecordDict[key]['stock_code']),
+                                      QStandardItem(tradeRecordDict[key]['stock_name']),
+                                      QStandardItem(tradeRecordDict[key]['detail']),
+                                      QStandardItem(tradeRecordDict[key]['trade_price']),
+                                      QStandardItem(tradeRecordDict[key]['trade_amount']),
+                                      QStandardItem(str(tradeRecordDict[key]['timestamp'])[11: 19]),
+                                      QStandardItem(tradeRecordDict[key]['trade_type']),
+                                      QStandardItem(str(tradeRecordDict[key]['money'])),
+                                      ])
 
-                # 将数据模型绑定到QTableView
-                self.ui.tbv_trade_record.setModel(self.records_model)
-            except Exception as ex:
-                log.error('UI 交易记录刷新错误:' + ex.__str__())
+            # 将数据模型绑定到QTableView
+            self.ui.tbv_trade_record.setModel(self.records_model)
         except Exception as ex:
             log.error('UI 交易记录刷新错误:' + ex.__str__())
 
+
+
+    # ///////////////////////////////////////////////////////////////
+
+    # ///////////////////////////////////////////////////////////////
+    # 刷新账户状态
+    refresh_account_status_signal = Signal()
+    refresh_account_status_timer = QTimer()
+
+    def refresh_account_status(self):
+        self.refresh_account_status_timer.timeout.connect(self.on_account_status_timeout)
+        # 定义刷新间隔
+        self.refresh_account_status_timer.start(5000)
+        # 关联刷新函数
+        self.refresh_account_status_signal.connect(self.refresh_account_status_data)
+
+    def on_account_status_timeout(self):
+        self.refresh_account_status_signal.emit()
+
+    def refresh_account_status_data(self):
+        try:
+            self.ui.lbl_balance_value.setText(str(random.randint(1,999999999)))
+            self.ui.lbl_available_value.setText(str(random.randint(1,999999999)))
+            self.ui.lbl_market_value_value.setText(str(random.randint(1,999999999)))
+            self.ui.lbl_profit_value.setText(str(random.randint(1,999999999)))
+            self.ui.lbl_today_profit_value.setText(str(random.randint(1,999999999)))
+            self.ui.lbl_today_profit_rate.setText(str(random.randint(1,999999999)))
+
+        except Exception as ex:
+            log.error('UI 账户状态刷新错误:' + ex.__str__())
 
     # ///////////////////////////////////////////////////////////////
 

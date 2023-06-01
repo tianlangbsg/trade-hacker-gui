@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>940</width>
-    <height>628</height>
+    <height>560</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -2456,7 +2456,7 @@ li.checked::marker { content: &quot;\2612&quot;; }
                                 <rect>
                                  <x>0</x>
                                  <y>0</y>
-                                 <width>348</width>
+                                 <width>218</width>
                                  <height>218</height>
                                 </rect>
                                </property>
@@ -3017,7 +3017,14 @@ li.checked::marker { content: &quot;\2612&quot;; }
                         </widget>
                        </item>
                        <item>
-                        <widget class="QTableView" name="tbv_trade_record"/>
+                        <widget class="QTableView" name="tbv_trade_record">
+                         <property name="maximumSize">
+                          <size>
+                           <width>835</width>
+                           <height>16777215</height>
+                          </size>
+                         </property>
+                        </widget>
                        </item>
                        <item>
                         <widget class="QLabel" name="lbl_alternative">

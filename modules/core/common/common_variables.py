@@ -11,11 +11,6 @@ global selectTargetThread  # 选股逻辑
 # ui后台子线程
 global refreshUITopThread  # ui涨幅前n个实时行情刷新
 
-refreshRealThread = None
-refreshTop100Thread = None
-selectTargetThread = None
-refreshUITopThread = None
-
 # 股票数据list
 global rawStockCodeList  # 原始不带前缀
 global stockCodeList  # 带前缀
@@ -46,3 +41,11 @@ stockRankDict = {}  # 股票涨跌幅排行
 stockRank100Dict = {}  # 股票涨幅排行前100
 stockTargetDict = {}  # 目标要操作的股票信息（含5档）
 candidateList = {}  # 候选股票
+
+
+# 账户状态
+global balance  # 账户余额
+global marketValue  # 账户市值
+global profit  # 账户浮动盈亏
+global todayProfit  # 当日盈亏
+global todayProfitRate  # 当日盈亏率

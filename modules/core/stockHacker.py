@@ -83,7 +83,9 @@ def get_top_real_and_save():
         stockData['limit_high'] = stockUtil.calc_price_limit_high(common_variables.stockHistoryDict[key]['close'])
         # 根据上个收盘价，计算当天涨停幅度
         stockData['change_range'] = stockUtil.calc_price_change_range(common_variables.stockHistoryDict[key]['close'], stockData['now'])
-        common_variables.stockRank100Dict[key] = stockData
+        # 判断是否濒临涨停（已经涨停的不计入）
+        if int(stockData['ask1_volume']) != 0:
+            common_variables.stockRank100Dict[key] = stockData
     tempDict.clear()
     log.info('Top100行情刷新耗时:' + format((datetime.datetime.now() - refreshTopTime).total_seconds(), '.3f') + 'S')
 
