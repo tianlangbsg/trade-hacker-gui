@@ -41,7 +41,7 @@ if allStockHistoryDict is None:
     allStockHistoryDict = tushareUtil.get_all_history(ig507Util.get_main_stock_list_from_ig507(), start, end)
     # 将该对象写入到本地，下次启动时可以直接进行读取
     stockUtil.save_history_60(allStockHistoryDict)
-log.info("历史交易数据初始化完成!")
+# log.info("历史交易数据初始化完成!")
 
 # 存放分析结果
 analysisResult = {}

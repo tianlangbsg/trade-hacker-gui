@@ -121,7 +121,7 @@ def refresh_real_info(stockCodeListList):
     # global stockRank100List
 
     # 获取最新分时价格数据
-    while True:
+    while common_variables.homeThreadStatus:
         try:
             refreshTime = datetime.datetime.now()
             # 更新数据键值对
@@ -139,7 +139,7 @@ def refresh_real_info(stockCodeListList):
 def refresh_top100_info():
     # global stockCodeList
     # 获取最新分时价格数据
-    while True:
+    while common_variables.homeThreadStatus:
         try:
             # 更新数据键值对
             get_top_real_and_save()
@@ -152,7 +152,7 @@ def refresh_top100_info():
 def select_target_from_top100():
     # global stockRank100Dict
     # global candidateList
-    while True:
+    while common_variables.homeThreadStatus:
         try:
             time.sleep(1)
             for key in common_variables.stockRank100Dict.keys():
@@ -332,7 +332,7 @@ def start():
     # log.info("启动买卖操作目标线程...")
     # autoTradeThread = threading.Thread(target=auto_trade())
     # autoTradeThread.start()
-    log.info("系统初始化完成")
+    log.info("运行结束")
 
 
 def stop():

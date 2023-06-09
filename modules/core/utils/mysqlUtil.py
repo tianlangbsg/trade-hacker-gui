@@ -62,6 +62,8 @@ class ConnectionPool(object):
             cursor.execute(sql)
             # 取到查询结果
             result = cursor.fetchall()
+            conn.commit()
+            cursor.close()
             return result
         except Exception as ex:
             log.error('数据库查询异常:' + ex.__str__())

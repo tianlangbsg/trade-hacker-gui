@@ -140,7 +140,6 @@ class AlternativeStockPool:
     timestamp = ""
 
     """构造方法"""
-
     def __init__(self, stock_code, stock_name=None, buy=None, sell=None, now=None, open=None, close=None, high=None, low=None, turnover=None, volume=None, ask1=None,
                  ask1_volume=None, ask2=None, ask2_volume=None, ask3=None, ask3_volume=None, ask4=None, ask4_volume=None, ask5=None, ask5_volume=None, bid1=None,
                  bid1_volume=None, bid2=None, bid2_volume=None, bid3=None, bid3_volume=None, bid4=None, bid4_volume=None, bid5=None, bid5_volume=None, date=None, time=None,

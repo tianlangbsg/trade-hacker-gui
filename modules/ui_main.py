@@ -1135,8 +1135,27 @@ class Ui_MainWindow(object):
         self.home = QWidget()
         self.home.setObjectName(u"home")
         self.home.setStyleSheet(u"")
-        self.gridLayout_3 = QGridLayout(self.home)
-        self.gridLayout_3.setObjectName(u"gridLayout_3")
+        self.verticalLayout_20 = QVBoxLayout(self.home)
+        self.verticalLayout_20.setObjectName(u"verticalLayout_20")
+        self.txt_info = QTextBrowser(self.home)
+        self.txt_info.setObjectName(u"txt_info")
+        sizePolicy4 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.txt_info.sizePolicy().hasHeightForWidth())
+        self.txt_info.setSizePolicy(sizePolicy4)
+        self.txt_info.setMinimumSize(QSize(800, 150))
+        self.txt_info.setFont(font)
+        self.txt_info.setStyleSheet(u"color:#5f5f5f;")
+
+        self.verticalLayout_20.addWidget(self.txt_info)
+
+        self.tbv_position = QTableView(self.home)
+        self.tbv_position.setObjectName(u"tbv_position")
+        self.tbv_position.setMinimumSize(QSize(0, 200))
+
+        self.verticalLayout_20.addWidget(self.tbv_position)
+
         self.stackedWidget_2 = QStackedWidget(self.home)
         self.stackedWidget_2.setObjectName(u"stackedWidget_2")
         self.stackedWidget_2.setMaximumSize(QSize(16777215, 100))
@@ -1176,20 +1195,7 @@ class Ui_MainWindow(object):
         self.page_2.setEnabled(True)
         self.stackedWidget_2.addWidget(self.page_2)
 
-        self.gridLayout_3.addWidget(self.stackedWidget_2, 2, 0, 1, 1)
-
-        self.txt_info = QTextBrowser(self.home)
-        self.txt_info.setObjectName(u"txt_info")
-        sizePolicy4 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.txt_info.sizePolicy().hasHeightForWidth())
-        self.txt_info.setSizePolicy(sizePolicy4)
-        self.txt_info.setMinimumSize(QSize(800, 350))
-        self.txt_info.setFont(font)
-        self.txt_info.setStyleSheet(u"color:#5f5f5f;")
-
-        self.gridLayout_3.addWidget(self.txt_info, 1, 0, 1, 1)
+        self.verticalLayout_20.addWidget(self.stackedWidget_2)
 
         self.stackedWidget.addWidget(self.home)
         self.widgets = QWidget()
@@ -1704,7 +1710,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.stackedWidget.setCurrentIndex(2)
+        self.stackedWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -1775,8 +1781,6 @@ class Ui_MainWindow(object):
         self.lbl_today_profit.setText(QCoreApplication.translate("MainWindow", u"\u5f53\u65e5\u76c8\u4e8f", None))
         self.lbl_today_profit_rate.setText(QCoreApplication.translate("MainWindow", u"\u5f53\u65e5\u76c8\u4e8f\u7387", None))
         self.lbl_today_profit_rate_value.setText("")
-        self.btn_start.setText(QCoreApplication.translate("MainWindow", u"Start", None))
-        self.btn_stop.setText(QCoreApplication.translate("MainWindow", u"Stop", None))
         self.txt_info.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
@@ -1785,6 +1789,8 @@ class Ui_MainWindow(object):
 "li.checked::marker { content: \"\\2612\"; }\n"
 "</style></head><body style=\" font-family:'Segoe UI'; font-size:10pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; line-height:10px; font-family:'Microsoft YaHei UI'; font-size:9pt;\"><br /></p></body></html>", None))
+        self.btn_start.setText(QCoreApplication.translate("MainWindow", u"Start", None))
+        self.btn_stop.setText(QCoreApplication.translate("MainWindow", u"Stop", None))
         self.labelBoxBlenderInstalation.setText(QCoreApplication.translate("MainWindow", u"FILE BOX", None))
         self.lineEdit.setText("")
         self.lineEdit.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Type here", None))

@@ -276,6 +276,7 @@ class UIFunctions(MainWindow):
         self.ui.maximizeRestoreAppBtn.clicked.connect(lambda: UIFunctions.maximize_restore(self))
 
         # CLOSE APPLICATION
+        common_variables.homeThreadStatus = False
         self.ui.closeAppBtn.clicked.connect(lambda: self.close())
 
     def resize_grips(self):

@@ -1,7 +1,9 @@
 # UI控件
 global ui_widgets  # 全局ui_main控件
 
-# 线程
+# 线程状态
+global homeThreadStatus
+homeThreadStatus = False
 # 首页子线程
 global homeThread
 # 后台子线程
