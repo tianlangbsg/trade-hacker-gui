@@ -254,9 +254,11 @@ if __name__ == '__main__':
     historyStart = "20230301"
     # 交易开始日期
     startDateList = [
-                      "20230531","20230601","20230602",
-                     ]
+                      "20230605","20230606","20230607","20230608","20230609",
+                      "20230612", "20230613", "20230614", "20230615", "20230616",
+                      "20230619"
+                    ]
     # 结束日期
-    endDate = "20230605"
+    endDate = "20230620"
     for startDate in startDateList:
         calcProfit(historyStart, startDate, endDate)

@@ -17,6 +17,8 @@ class TradeRecord:
     TRADE_AMOUNT = "TRADE_AMOUNT"
     # 交易时间
     TIMESTAMP = "TIMESTAMP"
+    # 是否处理到持仓 0未处理  1已处理
+    PROCESS_FLAG = "PROCESS_FLAG"
 
     """成员变量"""
     id = ""
@@ -27,9 +29,11 @@ class TradeRecord:
     trade_price = ""
     trade_amount = ""
     timestamp = ""
+    process_flag = ""
 
     """构造方法"""
-    def __init__(self, stock_code, stock_name=None, detail=None, trade_price=None, trade_type=None, trade_amount=None, timestamp=None):
+    def __init__(self, id, stock_code, stock_name=None, detail=None, trade_price=None, trade_type=None, trade_amount=None, timestamp=None, process_flag=0):
+        self.id = id
         self.stock_code = stock_code
         self.stock_name = stock_name
         self.detail = detail
@@ -37,6 +41,5 @@ class TradeRecord:
         self.trade_price = trade_price
         self.trade_amount = trade_amount
         self.timestamp = timestamp
+        self.process_flag = process_flag
 
-    def __str__(self):
-        print(self)

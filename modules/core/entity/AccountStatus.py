@@ -48,5 +48,3 @@ class AccountStatus:
         self.frozen_amount = frozen_amount
         self.withdrawable_amount = withdrawable_amount
 
-    def __str__(self):
-        print(self)

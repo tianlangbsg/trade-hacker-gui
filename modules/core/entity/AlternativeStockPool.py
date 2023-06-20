@@ -178,6 +178,3 @@ class AlternativeStockPool:
         self.date = date
         self.time = time
         self.timestamp = timestamp
-
-    def __str__(self):
-        print(self)

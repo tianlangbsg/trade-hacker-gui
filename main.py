@@ -17,6 +17,7 @@ from modules.core import stockHacker
 from modules.core.common import common_variables
 import modules.core.utils.logUtil as log
 from modules.core.simulationTrader.service.tradeRecordService import getTodayRecords
+from modules.core.utils import tradePositionUtil
 from widgets import *
 os.environ["QT_FONT_DPI"] = "96" # FIX Problem for High DPI and Scale above 100%
 
@@ -155,6 +156,7 @@ class MainWindow(QMainWindow):
                 self.refresh_account_status()
                 # 刷新持仓状态
                 # self.refresh_position()
+
 
                 self.refreshStatus = True
 
@@ -313,17 +315,17 @@ class MainWindow(QMainWindow):
             self.records_model.setHorizontalHeaderItem(7, QStandardItem("成交金额"))
 
             # 从数据库取得当天交易记录
-            tradeRecordDict = getTodayRecords()
+            tradeRecordList = getTodayRecords()
 
-            for key in tradeRecordDict.keys():
-                self.records_model.appendRow([QStandardItem(tradeRecordDict[key]['stock_code']),
-                                      QStandardItem(tradeRecordDict[key]['stock_name']),
-                                      QStandardItem(tradeRecordDict[key]['detail']),
-                                      QStandardItem(tradeRecordDict[key]['trade_price']),
-                                      QStandardItem(tradeRecordDict[key]['trade_amount']),
-                                      QStandardItem(str(tradeRecordDict[key]['timestamp'])[11: 19]),
-                                      QStandardItem(tradeRecordDict[key]['trade_type']),
-                                      QStandardItem(str(tradeRecordDict[key]['money'])),
+            for tradeRecord in tradeRecordList:
+                self.records_model.appendRow([QStandardItem(tradeRecord.stock_code),
+                                      QStandardItem(tradeRecord.stock_name),
+                                      QStandardItem(tradeRecord.detail),
+                                      QStandardItem(tradeRecord.trade_price),
+                                      QStandardItem(tradeRecord.trade_amount),
+                                      QStandardItem(str(tradeRecord.timestamp)[11: 19]),
+                                      QStandardItem(tradeRecord.trade_type),
+                                      QStandardItem(str(float(tradeRecord.trade_price)*float(tradeRecord.trade_amount)))
                                       ])
 
             # 将数据模型绑定到QTableView
@@ -359,6 +361,8 @@ class MainWindow(QMainWindow):
 
     def refresh_account_status_data(self):
         try:
+            # TODO
+            tradePositionUtil.refresh_trade_positions()
             self.ui.lbl_balance_value.setText(str(random.randint(1,999999999)))
             self.ui.lbl_available_value.setText(str(random.randint(1,999999999)))
             self.ui.lbl_market_value_value.setText(str(random.randint(1,999999999)))

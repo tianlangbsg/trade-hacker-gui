@@ -57,5 +57,3 @@ class StockPosition:
         self.holding_day = holding_day
         self.remark = remark
 
-    def __str__(self):
-        print(self)

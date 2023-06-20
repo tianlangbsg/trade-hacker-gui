@@ -52,5 +52,3 @@ class TradePosition:
         self.today_pl_ration = today_pl_ration
         self.latest_market_value = latest_market_value
 
-    def __str__(self):
-        print(self)

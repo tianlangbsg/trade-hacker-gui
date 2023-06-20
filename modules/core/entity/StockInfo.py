@@ -14,6 +14,3 @@ class StockInfo:
     def __init__(self,stock_code, stock_name=None):
         self.stock_code = stock_code
         self.stock_name = stock_name
-
-    def __str__(self):
-        print(self)

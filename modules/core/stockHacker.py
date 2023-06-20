@@ -18,22 +18,6 @@ from modules.core.utils import tushareUtil
 
 quotation = easyquotation.use('qq')  # 新浪 ['sina'] 腾讯 ['tencent', 'qq']
 
-# 股票数据list
-# rawStockCodeList = common_variables.rawStockCodeList = []  # 原始不带前缀
-# stockCodeList = common_variables.stockCodeList  = []  # 带前缀
-# stockHistoryList = common_variables.stockHistoryList  = []  # 股票历史数据
-# stockRankList = common_variables.stockRankList  = []  # 股票涨跌幅排行
-# stockRank100List = common_variables.stockRank100List  = []  # 股票涨幅排行前100
-# # 全股票数据集合
-# stockHistoryDict = common_variables.stockHistoryDict = {}  # 股票上个交易日信息
-# allStockHistoryDict = common_variables.allStockHistoryDict = {}  # 过去指定时间内全部股票信息
-# stockRealDict = common_variables.stockRealDict = {}  # 股票实时信息
-# stockRankDict = common_variables.stockRankDict = {}  # 股票涨跌幅排行
-# stockRank100Dict = common_variables.stockRank100Dict = {}  # 股票涨幅排行前100
-# stockTargetDict = common_variables.stockTargetDict = {}  # 目标要操作的股票信息（含5档）
-# candidateList = common_variables.candidateList = {}  # 候选股票
-
-
 # *************************************************************************************
 # 标准方法
 # *************************************************************************************
@@ -41,7 +25,6 @@ quotation = easyquotation.use('qq')  # 新浪 ['sina'] 腾讯 ['tencent', 'qq']
 
 # 刷新获取所有股票数组数据，并保存到stockRealDict, key=stock_code
 def get_all_real_and_save(stockCodeListList):
-    global stockRealDict
     for stockCodeList in stockCodeListList:
         tempDict = quotation.get_stock_data(stockCodeList)
         for key in tempDict.keys():
@@ -92,10 +75,6 @@ def get_top_real_and_save():
 
 # 对涨幅前100的进行排序
 def sort_stock_rank100():
-    # global stockRealDict
-    # global stockRankDict
-    # global stockRankList
-    # global stockRank100List
     # 按最新涨跌幅排序
     for key in common_variables.stockRealDict.keys():
         try:
@@ -115,11 +94,6 @@ def sort_stock_rank100():
 # *************************************************************************************
 # 定时任务，刷新最新股票价格
 def refresh_real_info(stockCodeListList):
-    # global stockRealDict
-    # global stockRankDict
-    # global stockRankList
-    # global stockRank100List
-
     # 获取最新分时价格数据
     while common_variables.homeThreadStatus:
         try:
@@ -242,11 +216,6 @@ def select_target_from_top100():
 
 # 定时任务，自动执行买卖操作 TODO
 def auto_buy_and_sell(stockCodeListList):
-    # global stockRealDict
-    # global stockRankDict
-    # global stockRankList
-    # global stockRank100List
-
     # 获取最新分时价格数据
     while True:
         try:
