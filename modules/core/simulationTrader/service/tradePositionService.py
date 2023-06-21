@@ -1,4 +1,6 @@
+from modules.core.entity.AccountStatus import AccountStatus
 from modules.core.entity.TradePosition import TradePosition
+from modules.core.simulationTrader.service import accountStatusService
 from modules.core.utils import mysqlUtil
 
 
@@ -44,22 +46,24 @@ def getAll():
     sql = "SELECT * FROM trade_position;"
     # 取到查询结果
     result = mysqlUtil.query(sql)
-    tradePositionDict = {}
+    tradePositionList = []
     for dataSet in result:
-        tradePosition = {}
-        tradePosition['stock_code']=dataSet[0],
-        tradePosition['stock_name']=dataSet[1],
-        tradePosition['total_amount']=dataSet[2],
-        tradePosition['can_sell_amount']=dataSet[3],
-        tradePosition['cost_price']=dataSet[4],
-        tradePosition['current_price']=dataSet[5],
-        tradePosition['pl']=dataSet[6],
-        tradePosition['pl_ration']=dataSet[7],
-        tradePosition['today_pl']=dataSet[8],
-        tradePosition['today_pl_ration']=dataSet[9],
-        tradePosition['latest_market_value']=dataSet[10],
-        tradePositionDict[dataSet[0]] = tradePosition
-    return tradePositionDict
+        tradePosition = TradePosition(
+            stock_code=dataSet[0],
+            stock_name=dataSet[1],
+            total_amount=dataSet[2],
+            can_sell_amount=dataSet[3],
+            cost_price=dataSet[4],
+            current_price=dataSet[5],
+            pl=dataSet[6],
+            pl_ration=dataSet[7],
+            today_pl=dataSet[8],
+            today_pl_ration=dataSet[9],
+            latest_market_value=dataSet[10],
+        )
+
+        tradePositionList.append(tradePosition)
+    return tradePositionList
 
 
 # 查询持仓记录
@@ -87,4 +91,27 @@ def get(stockCode):
     )
 
     return tradePosition
+
+
+# test
+# # 取得账号状态信息
+# accountStatus = accountStatusService.get()
+#
+# tradePositionList = getAll()
+# for tradePosition in tradePositionList:
+#
+#     # 计算账户余额
+#     accountStatus.fund_balance = accountStatus.fund_balance - tradePosition.total_amount*tradePosition.cost_price
+#     # 总市值
+#     accountStatus.stock_market_value = accountStatus.stock_market_value + tradePosition.total_amount*tradePosition.current_price
+#     # 总资产
+#     accountStatus.total_assets = accountStatus.fund_balance + accountStatus.stock_market_value
+#     # 总盈亏
+#     accountStatus.position_profit_loss = accountStatus.position_profit_loss + tradePosition.pl
+#     # 总盈亏率
+#     accountStatus.position_profit_loss_ratio = accountStatus.position_profit_loss/accountStatus.total_assets
+#
+# # 更新账户信息到数据库
+# accountStatusService.update(accountStatus)
+
 

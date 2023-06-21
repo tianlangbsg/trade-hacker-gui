@@ -17,13 +17,13 @@ from modules.core import stockHacker
 from modules.core.common import common_variables
 import modules.core.utils.logUtil as log
 from modules.core.simulationTrader.service.tradeRecordService import getTodayRecords
-from modules.core.utils import tradePositionUtil
+from modules.core.simulationTrader import tradeUtil
 from widgets import *
 os.environ["QT_FONT_DPI"] = "96" # FIX Problem for High DPI and Scale above 100%
-
 # SET AS GLOBAL WIDGETS
 # ///////////////////////////////////////////////////////////////
 widgets = None
+
 
 class MainWindow(QMainWindow):
 
@@ -361,14 +361,17 @@ class MainWindow(QMainWindow):
 
     def refresh_account_status_data(self):
         try:
-            # TODO
-            tradePositionUtil.refresh_trade_positions()
-            self.ui.lbl_balance_value.setText(str(random.randint(1,999999999)))
-            self.ui.lbl_available_value.setText(str(random.randint(1,999999999)))
-            self.ui.lbl_market_value_value.setText(str(random.randint(1,999999999)))
-            self.ui.lbl_profit_value.setText(str(random.randint(1,999999999)))
-            self.ui.lbl_today_profit_value.setText(str(random.randint(1,999999999)))
-            self.ui.lbl_today_profit_rate.setText(str(random.randint(1,999999999)))
+            # 根据交易记录，刷新最新的持仓信息到数据库汇总
+            tradeUtil.refresh_trade_positions()
+            # 计算账户信息表
+            accountStatus = tradeUtil.refresh_account_status()
+            # 刷新页面显示
+            self.ui.lbl_balance_value.setText(str(accountStatus.fund_balance))
+            self.ui.lbl_available_value.setText(str(accountStatus.fund_balance))
+            self.ui.lbl_market_value_value.setText(str(accountStatus.stock_market_value))
+            self.ui.lbl_profit_value.setText(str(accountStatus.position_profit_loss))
+            self.ui.lbl_today_profit_value.setText(str(accountStatus.position_profit_loss))
+            self.ui.lbl_today_profit_rate.setText(str(accountStatus.position_profit_loss_ratio)[0: 7])
 
         except Exception as ex:
             log.error('UI 账户状态刷新错误:' + ex.__str__())

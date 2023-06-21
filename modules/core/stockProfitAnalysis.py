@@ -1,11 +1,11 @@
 # pyecharts引用
 from pyecharts import options as opts
-from pyecharts.charts import Bar, Grid, Line, Kline, Page
+from pyecharts.charts import Bar, Line, Page
 
-from simulationTrader.service import tradeRecordService, alternativeStockPoolService
-from utils import stockUtil, ig507Util
+from simulationTrader.service import tradeRecordService
+from utils import ig507Util
 from utils import tushareUtil
-from utils.commonUtil import get_root_path, get_home_path
+from utils.commonUtil import get_home_path
 
 # 取得所有主板股票代码名称
 from utils.pyecharts import professionalKlineChart

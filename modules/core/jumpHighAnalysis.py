@@ -1,9 +1,6 @@
 import datetime
 
-import numpy as np
-
 import utils.logUtil as log
-import matplotlib.pyplot as plt
 
 # pyecharts引用
 from pyecharts import options as opts
@@ -11,11 +8,11 @@ from pyecharts.charts import Bar, Grid, Line
 
 import easyquotation
 # from dbUtil import mysqlUtil
-from time import strftime, localtime
-from utils import stockUtil
+from time import localtime
+from modules.core.utils import stockUtil
 from utils import ig507Util
 from utils import tushareUtil
-from utils.commonUtil import get_root_path, get_home_path
+from utils.commonUtil import get_home_path
 
 quotation = easyquotation.use('sina')  # 新浪 ['sina'] 腾讯 ['tencent', 'qq']
 

@@ -6,14 +6,13 @@ import modules.core.utils.logUtil as log
 
 import easyquotation
 # from dbUtil import mysqlUtil
-from time import strftime, localtime
+from time import localtime
 
 from modules.core.entity.AlternativeStockPool import AlternativeStockPool
 from modules.core.common import common_variables
-from modules.core.simulationTrader.service import alternativeStockPoolService
+from modules.core.simulationTrader.service import alternativeStockPoolService, tradeRecordService
 from modules.core.simulationTrader.tradeUtil import buyStock
-from modules.core.utils import stockUtil
-from modules.core.utils import ig507Util
+from modules.core.utils import ig507Util, stockUtil
 from modules.core.utils import tushareUtil
 
 quotation = easyquotation.use('qq')  # 新浪 ['sina'] 腾讯 ['tencent', 'qq']
@@ -200,11 +199,16 @@ def select_target_from_top100():
                 alternativeStockPoolService.insert(alternativeStockPool)
                 # 判断是否在交易时间范围内
                 currentTime = datetime.datetime.now().strftime('%H%M%S')
-                if("093000" < currentTime < "113000") or ("130000" < currentTime < "150000"):
+                if("093000" < currentTime < "113000") or ("130000" < currentTime < "145700"):
                     # 计算买入数量（最大不超过1W）
                     buyAmount = int((10000/alternativeStockPool.now)/100)*100
                     # 插入购买记录
-                    buyStock(alternativeStockPool,buyAmount)
+                    # 查询当日是否已经购买该票
+                    todayTradeRecords = tradeRecordService.getBuyRecords(datetime.datetime.now().strftime('%Y%m%d'),
+                                                                         stockData.stock_code)
+                    # 模拟买入股票(如果今日已买，就忽略)
+                    if todayTradeRecords.__len__() == 0:
+                        buyStock(alternativeStockPool, buyAmount)
 
                 # #################################################################################
             log.info('********************************************************************')
@@ -222,7 +226,6 @@ def auto_buy_and_sell(stockCodeListList):
             refreshTime = datetime.datetime.now()
             # 更新数据键值对
             get_all_real_and_save(stockCodeListList)
-            # log.info('全行情API获取耗时' + format((datetime.datetime.now() - refreshTime).total_seconds(), '.3f') + 'S')
             sort_stock_rank100()
             log.info('全行情刷新耗时' + format((datetime.datetime.now() - refreshTime).total_seconds(), '.3f') + 'S')
             refreshTime = datetime.datetime.now()

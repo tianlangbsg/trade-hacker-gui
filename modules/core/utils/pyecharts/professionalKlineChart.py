@@ -119,7 +119,7 @@ def calculate_chg():
     result: List[Union[float, str]] = []
 
     for i in range(len(data["datas"])):
-        result.append(stockUtil.calc_price_change_range(data["datas"][i][1],data["datas"][i][0]))
+        result.append(stockUtil.calc_price_change_range(data["datas"][i][1], data["datas"][i][0]))
     return result
 
 def draw_chart(stockName, data):
