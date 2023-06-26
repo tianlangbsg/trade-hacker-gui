@@ -10,6 +10,7 @@ global homeThread
 global refreshRealThread  # 实时行情刷新
 global refreshTop100Thread  # 涨幅前100实时行情刷新
 global selectTargetThread  # 选股逻辑
+global autoSellThread      # 自动卖出
 # ui后台子线程
 global refreshUITopThread  # ui涨幅前n个实时行情刷新
 
@@ -39,6 +40,7 @@ stockRank100List = []  # 股票涨幅排行前100
 stockHistoryDict = {}  # 股票上个交易日信息
 allStockHistoryDict = {}  # 过去指定时间内全部股票信息
 stockRealDict = {}  # 股票实时信息
+stockPositionRealDict = {}  # 持仓股票实时信息
 stockRankDict = {}  # 股票涨跌幅排行
 stockRank100Dict = {}  # 股票涨幅排行前100
 stockTargetDict = {}  # 目标要操作的股票信息（含5档）

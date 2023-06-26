@@ -10,12 +10,14 @@ from time import localtime
 
 from modules.core.entity.AlternativeStockPool import AlternativeStockPool
 from modules.core.common import common_variables
-from modules.core.simulationTrader.service import alternativeStockPoolService, tradeRecordService
-from modules.core.simulationTrader.tradeUtil import buyStock
+from modules.core.entity.TradeRecord import TradeRecord
+from modules.core.simulationTrader import tradeUtil
+from modules.core.simulationTrader.service import alternativeStockPoolService, tradeRecordService, tradePositionService
+from modules.core.simulationTrader.tradeUtil import buyStock, sellStock
 from modules.core.utils import ig507Util, stockUtil
 from modules.core.utils import tushareUtil
 
-quotation = easyquotation.use('qq')  # 新浪 ['sina'] 腾讯 ['tencent', 'qq']
+quotation = easyquotation.use('tencent')  # 新浪 ['sina'] 腾讯 ['tencent', 'qq']
 
 # *************************************************************************************
 # 标准方法
@@ -40,6 +42,38 @@ def get_all_real_and_save(stockCodeListList):
             stockData['change_range'] = stockUtil.calc_price_change_range(common_variables.stockHistoryDict[key]['close'],
                                                                           stockData['now'])
             common_variables.stockRealDict[key] = stockData
+
+
+# 刷新获取所有持仓股票数组数据，并保存到stockPositionRealDict, key=stock_code
+def get_all_position_real_and_save():
+
+    # 取得当日可卖出的股票列表
+    canSellStockList = tradePositionService.getCanSell()
+    codeList = []
+    canSellDict = {}
+    for stockData in canSellStockList:
+        codeList.append(stockUtil.get_complete_stock_code(stockData.stock_code))
+        canSellDict[stockData.stock_code] = stockData.can_sell_amount
+    stockCodeListList = stockUtil.list_split(codeList, 300)
+
+    for stockCodeList in stockCodeListList:
+        tempDict = quotation.get_stock_data(stockCodeList)
+        for key in tempDict.keys():
+            stockData = tempDict[key]
+            # 如果该票的key不存在，则跳过
+            if common_variables.stockHistoryDict.get(key) == None:
+                continue
+            # 如果该票未开盘，则跳过
+            if stockData['now'] == None or common_variables.stockHistoryDict[key]['close'] == None:
+                continue
+            # 根据上个收盘价，计算当天涨停价格
+            stockData['limit_high'] = stockUtil.calc_price_limit_high(common_variables.stockHistoryDict[key]['close'])
+            # 根据上个收盘价，计算当天涨停幅度
+            stockData['change_range'] = stockUtil.calc_price_change_range(common_variables.stockHistoryDict[key]['close'],
+                                                                          stockData['now'])
+            # 计算持仓可卖数量
+            stockData['can_sell_amount'] = canSellDict[key]
+            common_variables.stockPositionRealDict[key] = stockData
 
 
 # 刷新获取排名靠前股票数组数据，并保存到stockReal100Dict, key=stock_code
@@ -218,20 +252,44 @@ def select_target_from_top100():
             log.error('选股失败:' + e.__str__())
 
 
-# 定时任务，自动执行买卖操作 TODO
-def auto_buy_and_sell(stockCodeListList):
+# 定时任务，自动执行卖操作
+def auto_sell():
     # 获取最新分时价格数据
     while True:
         try:
             refreshTime = datetime.datetime.now()
+            # 根据交易记录，刷新最新的持仓信息到数据库汇总
+            tradeUtil.refresh_trade_records_to_positions()
+            tradeUtil.refresh_trade_positions()
             # 更新数据键值对
-            get_all_real_and_save(stockCodeListList)
-            sort_stock_rank100()
-            log.info('全行情刷新耗时' + format((datetime.datetime.now() - refreshTime).total_seconds(), '.3f') + 'S')
+            get_all_position_real_and_save()
+            for stockCode in common_variables.stockPositionRealDict.keys():
+                data = common_variables.stockPositionRealDict[stockCode]
+
+                # 动态止盈止损2%
+                if (float(data['high']) - float(data['now']))/float(data['high']) > float(0.02):
+                    # 判断是否在交易时间范围内
+                    currentTime = datetime.datetime.now().strftime('%H%M%S')
+                    # if ("093000" < currentTime < "113000") or ("130000" < currentTime < "145700"):
+                    tradeRecord = TradeRecord(
+                        stock_code=data['code'],
+                        stock_name=data['name'],
+                        detail='全仓',
+                        trade_price=data['now'],
+                        process_flag=0
+                    )
+                    if common_variables.stockPositionRealDict[stockCode]['can_sell_amount'] > 0:
+                        # 全卖出
+                        sellAmount = data['can_sell_amount']
+                        # 模拟卖出股票（插入卖出记录）
+                        sellStock(tradeRecord, sellAmount)
+                        common_variables.stockPositionRealDict[stockCode]['can_sell_amount'] = 0
+
+            log.info('持仓行情刷新耗时' + format((datetime.datetime.now() - refreshTime).total_seconds(), '.3f') + 'S')
             refreshTime = datetime.datetime.now()
-            time.sleep(60)
+            time.sleep(1)
         except Exception as e:
-            log.error('全行情刷新失败:' + e.__str__())
+            log.error('持仓情刷新失败:' + e.__str__())
 
 # *************************************************************************************
 # *************************************************************************************
@@ -248,6 +306,7 @@ def start():
     if(now.weekday()==0):
         delta = datetime.timedelta(days=3)
     yesterday = (now - delta).strftime('%Y%m%d')
+    yesterday = '20230621'
 
     # 查询当前所有正常上市交易的股票列表ig507
     common_variables.stockCodeList = ig507Util.get_main_stock_list_from_ig507_suffix()
@@ -297,13 +356,13 @@ def start():
 
     # 启动top100选择操作目标线程
     log.info("启动top100选择操作目标线程...")
-    common_variables.selectTargetThread = threading.Thread(target=select_target_from_top100())
+    common_variables.selectTargetThread = threading.Thread(target=select_target_from_top100)
     common_variables.selectTargetThread.start()
 
     # 启动买卖操作线程
-    # log.info("启动买卖操作目标线程...")
-    # autoTradeThread = threading.Thread(target=auto_trade())
-    # autoTradeThread.start()
+    log.info("启动卖出操作目标线程...")
+    common_variables.autoSellThread = threading.Thread(target=auto_sell)
+    common_variables.autoSellThread.start()
     log.info("运行结束")
 
 

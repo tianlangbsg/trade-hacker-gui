@@ -32,7 +32,7 @@ class TradeRecord:
     process_flag = ""
 
     """构造方法"""
-    def __init__(self, id, stock_code, stock_name=None, detail=None, trade_price=None, trade_type=None, trade_amount=None, timestamp=None, process_flag=0):
+    def __init__(self, id=None, stock_code=None, stock_name=None, detail=None, trade_price=None, trade_type=None, trade_amount=None, timestamp=None, process_flag=0):
         self.id = id
         self.stock_code = stock_code
         self.stock_name = stock_name

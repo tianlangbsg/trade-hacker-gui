@@ -361,8 +361,7 @@ class MainWindow(QMainWindow):
 
     def refresh_account_status_data(self):
         try:
-            # 根据交易记录，刷新最新的持仓信息到数据库汇总
-            tradeUtil.refresh_trade_positions()
+
             # 计算账户信息表
             accountStatus = tradeUtil.refresh_account_status()
             # 刷新页面显示

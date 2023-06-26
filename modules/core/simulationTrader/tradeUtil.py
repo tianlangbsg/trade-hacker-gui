@@ -23,13 +23,13 @@ def buyStock(stockData, buyAmount):
 
 
 # 模拟卖出股票
-def sellStock(stockData, sellAmount):
+def sellStock(tradeRecord, sellAmount):
     tradeRecord = TradeRecord(
-        stock_code=stockData.stock_code,
-        stock_name=stockData.stock_name,
-        detail=stockData.bid1_volume,
+        stock_code=tradeRecord.stock_code,
+        stock_name=tradeRecord.stock_name,
+        detail=tradeRecord.detail,
         trade_type='sell',
-        trade_price=stockData.now,
+        trade_price=tradeRecord.trade_price,
         trade_amount=sellAmount,
         timestamp=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')[:-3],
         process_flag=0
@@ -40,7 +40,7 @@ def sellStock(stockData, sellAmount):
 
 
 # 根据交易记录，将最新持仓信息更新到持仓表
-def refresh_trade_positions():
+def refresh_trade_records_to_positions():
     # 从数据库取得当天交易记录
     tradeRecordList = tradeRecordService.getTodayRecords()
     # 取得账号状态信息
@@ -96,10 +96,18 @@ def refresh_trade_positions():
 
             # 再更新持仓数
             tradePosition.total_amount = tradePosition.total_amount - tradeRecord.trade_amount
+            tradePosition.can_sell_amount = tradePosition.can_sell_amount - tradeRecord.trade_amount
             tradePosition.current_price = common_variables.stockRealDict[tradeRecord.stock_code]['now']
-            # 计算利润
-            tradePosition.pl = (tradePosition.current_price - tradePosition.cost_price)*tradePosition.total_amount
-            tradePosition.latest_market_value = tradePosition.current_price*tradePosition.total_amount
+            # 计算利润(未清仓)
+            if tradePosition.total_amount > tradeRecord.trade_amount:
+                tradePosition.pl = (tradePosition.current_price - tradePosition.cost_price)*tradePosition.total_amount
+                tradePosition.latest_market_value = tradePosition.current_price*tradePosition.total_amount
+                tradePosition.pl_ration = tradePosition.pl / (tradePosition.cost_price * tradePosition.total_amount)
+            else:
+                # 计算利润(清仓)
+                tradePosition.pl = (tradePosition.current_price - tradePosition.cost_price) * tradeRecord.trade_amount
+                tradePosition.latest_market_value = tradePosition.current_price * tradeRecord.trade_amount
+                tradePosition.pl_ration = tradePosition.pl / (tradePosition.cost_price * tradeRecord.trade_amount)
 
             tradePositionService.update(tradePosition)
             # 计算账户余额
@@ -111,7 +119,23 @@ def refresh_trade_positions():
         tradeRecord.process_flag = 1
         tradeRecordService.update(tradeRecord)
         # 打印日志
-        log.info("更新持仓:" + tradeRecord.stock_code + "_" + tradeRecord.stock_name)
+        log.info("更新持仓买卖信息:" + tradeRecord.stock_code + "_" + tradeRecord.stock_name)
+
+
+# 单纯更新持仓利润信息
+def refresh_trade_positions():
+    # 更新持仓中的实时价格和利润信息
+    tradePositionList = tradePositionService.getAll()
+    for tradePosition in tradePositionList:
+        tradePosition.current_price = common_variables.stockRealDict[tradePosition.stock_code]['now']
+        # 计算利润(未清仓)
+        if tradePosition.total_amount > 0:
+            tradePosition.pl = (tradePosition.current_price - tradePosition.cost_price) * tradePosition.total_amount
+            tradePosition.latest_market_value = tradePosition.current_price * tradePosition.total_amount
+            tradePosition.pl_ration = tradePosition.pl / (tradePosition.cost_price * tradePosition.total_amount)
+            tradePositionService.update(tradePosition)
+            # 打印日志
+            # log.info("更新持仓利润信息:" + tradePosition.stock_code + "_" + tradePosition.stock_name)
 
 
 # 计算账户状态

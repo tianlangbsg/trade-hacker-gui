@@ -67,6 +67,32 @@ def getAll():
 
 
 # 查询持仓记录
+def getCanSell():
+    # 定义要执行的SQL语句
+    sql = "SELECT * FROM trade_position WHERE can_sell_amount>0;"
+    # 取到查询结果
+    result = mysqlUtil.query(sql)
+    tradePositionList = []
+    for dataSet in result:
+        tradePosition = TradePosition(
+            stock_code=dataSet[0],
+            stock_name=dataSet[1],
+            total_amount=dataSet[2],
+            can_sell_amount=dataSet[3],
+            cost_price=dataSet[4],
+            current_price=dataSet[5],
+            pl=dataSet[6],
+            pl_ration=dataSet[7],
+            today_pl=dataSet[8],
+            today_pl_ration=dataSet[9],
+            latest_market_value=dataSet[10],
+        )
+
+        tradePositionList.append(tradePosition)
+    return tradePositionList
+
+
+# 查询持仓记录
 def get(stockCode):
     # 定义要执行的SQL语句
     sql = "SELECT * FROM trade_position WHERE stock_code='"+ stockCode + "';"

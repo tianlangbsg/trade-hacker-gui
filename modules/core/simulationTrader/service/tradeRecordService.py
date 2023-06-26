@@ -116,7 +116,7 @@ def getTotalAssetsByDate(date):
 def insert(tradeRecord):
     # 定义要执行的SQL语句
     sql = 'INSERT INTO trade_record (stock_code,stock_name,detail,trade_type,trade_price,trade_amount,timestamp,process_flag) ' \
-          'VALUES (%s,%s,%s,%s,%s,%s,%s,,%s);'
+          'VALUES (%s,%s,%s,%s,%s,%s,%s,%s);'
 
     params = [tradeRecord.stock_code, tradeRecord.stock_name, tradeRecord.detail, tradeRecord.trade_type, tradeRecord.trade_price, tradeRecord.trade_amount,tradeRecord.timestamp,tradeRecord.process_flag]
 
