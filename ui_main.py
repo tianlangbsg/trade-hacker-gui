@@ -1039,36 +1039,15 @@ class Ui_MainWindow(object):
         self.verticalLayout_15.setContentsMargins(10, 10, 10, 10)
         self.gridLayout_5 = QGridLayout()
         self.gridLayout_5.setObjectName(u"gridLayout_5")
-        self.lbl_market_value_value = QLabel(self.pagesContainer)
-        self.lbl_market_value_value.setObjectName(u"lbl_market_value_value")
+        self.lbl_profit = QLabel(self.pagesContainer)
+        self.lbl_profit.setObjectName(u"lbl_profit")
         sizePolicy3 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         sizePolicy3.setHorizontalStretch(0)
         sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.lbl_market_value_value.sizePolicy().hasHeightForWidth())
-        self.lbl_market_value_value.setSizePolicy(sizePolicy3)
-
-        self.gridLayout_5.addWidget(self.lbl_market_value_value, 0, 5, 1, 1)
-
-        self.lbl_balance = QLabel(self.pagesContainer)
-        self.lbl_balance.setObjectName(u"lbl_balance")
-        sizePolicy3.setHeightForWidth(self.lbl_balance.sizePolicy().hasHeightForWidth())
-        self.lbl_balance.setSizePolicy(sizePolicy3)
-
-        self.gridLayout_5.addWidget(self.lbl_balance, 0, 0, 1, 1)
-
-        self.lbl_profit = QLabel(self.pagesContainer)
-        self.lbl_profit.setObjectName(u"lbl_profit")
         sizePolicy3.setHeightForWidth(self.lbl_profit.sizePolicy().hasHeightForWidth())
         self.lbl_profit.setSizePolicy(sizePolicy3)
 
         self.gridLayout_5.addWidget(self.lbl_profit, 0, 6, 1, 1)
-
-        self.lbl_available_value = QLabel(self.pagesContainer)
-        self.lbl_available_value.setObjectName(u"lbl_available_value")
-        sizePolicy3.setHeightForWidth(self.lbl_available_value.sizePolicy().hasHeightForWidth())
-        self.lbl_available_value.setSizePolicy(sizePolicy3)
-
-        self.gridLayout_5.addWidget(self.lbl_available_value, 0, 3, 1, 1)
 
         self.lbl_available = QLabel(self.pagesContainer)
         self.lbl_available.setObjectName(u"lbl_available")
@@ -1077,12 +1056,47 @@ class Ui_MainWindow(object):
 
         self.gridLayout_5.addWidget(self.lbl_available, 0, 2, 1, 1)
 
+        self.lbl_today_profit = QLabel(self.pagesContainer)
+        self.lbl_today_profit.setObjectName(u"lbl_today_profit")
+        sizePolicy3.setHeightForWidth(self.lbl_today_profit.sizePolicy().hasHeightForWidth())
+        self.lbl_today_profit.setSizePolicy(sizePolicy3)
+
+        self.gridLayout_5.addWidget(self.lbl_today_profit, 0, 10, 1, 1)
+
+        self.lbl_total_assets = QLabel(self.pagesContainer)
+        self.lbl_total_assets.setObjectName(u"lbl_total_assets")
+        sizePolicy3.setHeightForWidth(self.lbl_total_assets.sizePolicy().hasHeightForWidth())
+        self.lbl_total_assets.setSizePolicy(sizePolicy3)
+
+        self.gridLayout_5.addWidget(self.lbl_total_assets, 0, 0, 1, 1)
+
+        self.lbl_available_value = QLabel(self.pagesContainer)
+        self.lbl_available_value.setObjectName(u"lbl_available_value")
+        sizePolicy3.setHeightForWidth(self.lbl_available_value.sizePolicy().hasHeightForWidth())
+        self.lbl_available_value.setSizePolicy(sizePolicy3)
+
+        self.gridLayout_5.addWidget(self.lbl_available_value, 0, 3, 1, 1)
+
+        self.lbl_total_assets_value = QLabel(self.pagesContainer)
+        self.lbl_total_assets_value.setObjectName(u"lbl_total_assets_value")
+        sizePolicy3.setHeightForWidth(self.lbl_total_assets_value.sizePolicy().hasHeightForWidth())
+        self.lbl_total_assets_value.setSizePolicy(sizePolicy3)
+
+        self.gridLayout_5.addWidget(self.lbl_total_assets_value, 0, 1, 1, 1)
+
         self.lbl_today_profit_value = QLabel(self.pagesContainer)
         self.lbl_today_profit_value.setObjectName(u"lbl_today_profit_value")
         sizePolicy3.setHeightForWidth(self.lbl_today_profit_value.sizePolicy().hasHeightForWidth())
         self.lbl_today_profit_value.setSizePolicy(sizePolicy3)
 
-        self.gridLayout_5.addWidget(self.lbl_today_profit_value, 0, 9, 1, 1)
+        self.gridLayout_5.addWidget(self.lbl_today_profit_value, 0, 11, 1, 1)
+
+        self.lbl_today_profit_rate_value = QLabel(self.pagesContainer)
+        self.lbl_today_profit_rate_value.setObjectName(u"lbl_today_profit_rate_value")
+        sizePolicy3.setHeightForWidth(self.lbl_today_profit_rate_value.sizePolicy().hasHeightForWidth())
+        self.lbl_today_profit_rate_value.setSizePolicy(sizePolicy3)
+
+        self.gridLayout_5.addWidget(self.lbl_today_profit_rate_value, 0, 13, 1, 1)
 
         self.lbl_market_value = QLabel(self.pagesContainer)
         self.lbl_market_value.setObjectName(u"lbl_market_value")
@@ -1091,6 +1105,27 @@ class Ui_MainWindow(object):
 
         self.gridLayout_5.addWidget(self.lbl_market_value, 0, 4, 1, 1)
 
+        self.lbl_today_profit_rate = QLabel(self.pagesContainer)
+        self.lbl_today_profit_rate.setObjectName(u"lbl_today_profit_rate")
+        sizePolicy3.setHeightForWidth(self.lbl_today_profit_rate.sizePolicy().hasHeightForWidth())
+        self.lbl_today_profit_rate.setSizePolicy(sizePolicy3)
+
+        self.gridLayout_5.addWidget(self.lbl_today_profit_rate, 0, 12, 1, 1)
+
+        self.lbl_market_value_value = QLabel(self.pagesContainer)
+        self.lbl_market_value_value.setObjectName(u"lbl_market_value_value")
+        sizePolicy3.setHeightForWidth(self.lbl_market_value_value.sizePolicy().hasHeightForWidth())
+        self.lbl_market_value_value.setSizePolicy(sizePolicy3)
+
+        self.gridLayout_5.addWidget(self.lbl_market_value_value, 0, 5, 1, 1)
+
+        self.lbl_profit_ratio = QLabel(self.pagesContainer)
+        self.lbl_profit_ratio.setObjectName(u"lbl_profit_ratio")
+        sizePolicy3.setHeightForWidth(self.lbl_profit_ratio.sizePolicy().hasHeightForWidth())
+        self.lbl_profit_ratio.setSizePolicy(sizePolicy3)
+
+        self.gridLayout_5.addWidget(self.lbl_profit_ratio, 0, 8, 1, 1)
+
         self.lbl_profit_value = QLabel(self.pagesContainer)
         self.lbl_profit_value.setObjectName(u"lbl_profit_value")
         sizePolicy3.setHeightForWidth(self.lbl_profit_value.sizePolicy().hasHeightForWidth())
@@ -1098,33 +1133,12 @@ class Ui_MainWindow(object):
 
         self.gridLayout_5.addWidget(self.lbl_profit_value, 0, 7, 1, 1)
 
-        self.lbl_balance_value = QLabel(self.pagesContainer)
-        self.lbl_balance_value.setObjectName(u"lbl_balance_value")
-        sizePolicy3.setHeightForWidth(self.lbl_balance_value.sizePolicy().hasHeightForWidth())
-        self.lbl_balance_value.setSizePolicy(sizePolicy3)
+        self.lbl_profit_ration_value = QLabel(self.pagesContainer)
+        self.lbl_profit_ration_value.setObjectName(u"lbl_profit_ration_value")
+        sizePolicy3.setHeightForWidth(self.lbl_profit_ration_value.sizePolicy().hasHeightForWidth())
+        self.lbl_profit_ration_value.setSizePolicy(sizePolicy3)
 
-        self.gridLayout_5.addWidget(self.lbl_balance_value, 0, 1, 1, 1)
-
-        self.lbl_today_profit = QLabel(self.pagesContainer)
-        self.lbl_today_profit.setObjectName(u"lbl_today_profit")
-        sizePolicy3.setHeightForWidth(self.lbl_today_profit.sizePolicy().hasHeightForWidth())
-        self.lbl_today_profit.setSizePolicy(sizePolicy3)
-
-        self.gridLayout_5.addWidget(self.lbl_today_profit, 0, 8, 1, 1)
-
-        self.lbl_today_profit_rate = QLabel(self.pagesContainer)
-        self.lbl_today_profit_rate.setObjectName(u"lbl_today_profit_rate")
-        sizePolicy3.setHeightForWidth(self.lbl_today_profit_rate.sizePolicy().hasHeightForWidth())
-        self.lbl_today_profit_rate.setSizePolicy(sizePolicy3)
-
-        self.gridLayout_5.addWidget(self.lbl_today_profit_rate, 0, 10, 1, 1)
-
-        self.lbl_today_profit_rate_value = QLabel(self.pagesContainer)
-        self.lbl_today_profit_rate_value.setObjectName(u"lbl_today_profit_rate_value")
-        sizePolicy3.setHeightForWidth(self.lbl_today_profit_rate_value.sizePolicy().hasHeightForWidth())
-        self.lbl_today_profit_rate_value.setSizePolicy(sizePolicy3)
-
-        self.gridLayout_5.addWidget(self.lbl_today_profit_rate_value, 0, 11, 1, 1)
+        self.gridLayout_5.addWidget(self.lbl_profit_ration_value, 0, 9, 1, 1)
 
 
         self.verticalLayout_15.addLayout(self.gridLayout_5)
@@ -1144,7 +1158,8 @@ class Ui_MainWindow(object):
         sizePolicy4.setVerticalStretch(0)
         sizePolicy4.setHeightForWidth(self.txt_info.sizePolicy().hasHeightForWidth())
         self.txt_info.setSizePolicy(sizePolicy4)
-        self.txt_info.setMinimumSize(QSize(800, 150))
+        self.txt_info.setMinimumSize(QSize(800, 20))
+        self.txt_info.setMaximumSize(QSize(16777215, 20))
         self.txt_info.setFont(font)
         self.txt_info.setStyleSheet(u"color:#5f5f5f;")
 
@@ -1769,18 +1784,20 @@ class Ui_MainWindow(object):
         self.closeAppBtn.setToolTip(QCoreApplication.translate("MainWindow", u"Close", None))
 #endif // QT_CONFIG(tooltip)
         self.closeAppBtn.setText("")
-        self.lbl_market_value_value.setText("")
-        self.lbl_balance.setText(QCoreApplication.translate("MainWindow", u"\u4f59\u989d", None))
         self.lbl_profit.setText(QCoreApplication.translate("MainWindow", u"\u603b\u76c8\u4e8f", None))
-        self.lbl_available_value.setText("")
         self.lbl_available.setText(QCoreApplication.translate("MainWindow", u"\u53ef\u7528", None))
-        self.lbl_today_profit_value.setText("")
-        self.lbl_market_value.setText(QCoreApplication.translate("MainWindow", u"\u53c2\u8003\u5e02\u503c", None))
-        self.lbl_profit_value.setText("")
-        self.lbl_balance_value.setText("")
         self.lbl_today_profit.setText(QCoreApplication.translate("MainWindow", u"\u5f53\u65e5\u76c8\u4e8f", None))
-        self.lbl_today_profit_rate.setText(QCoreApplication.translate("MainWindow", u"\u5f53\u65e5\u76c8\u4e8f\u7387", None))
+        self.lbl_total_assets.setText(QCoreApplication.translate("MainWindow", u"\u603b\u8d44\u4ea7", None))
+        self.lbl_available_value.setText("")
+        self.lbl_total_assets_value.setText("")
+        self.lbl_today_profit_value.setText("")
         self.lbl_today_profit_rate_value.setText("")
+        self.lbl_market_value.setText(QCoreApplication.translate("MainWindow", u"\u53c2\u8003\u5e02\u503c", None))
+        self.lbl_today_profit_rate.setText(QCoreApplication.translate("MainWindow", u"\u5f53\u65e5\u76c8\u4e8f\u7387", None))
+        self.lbl_market_value_value.setText("")
+        self.lbl_profit_ratio.setText(QCoreApplication.translate("MainWindow", u"\u603b\u76c8\u4e8f\u7387", None))
+        self.lbl_profit_value.setText("")
+        self.lbl_profit_ration_value.setText("")
         self.txt_info.setHtml(QCoreApplication.translate("MainWindow", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><meta charset=\"utf-8\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"

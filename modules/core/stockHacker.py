@@ -168,6 +168,9 @@ def select_target_from_top100():
                 stockData = common_variables.stockRank100Dict[key]
                 # 取出单只股票过去60日数据
                 stockHistory60Data = common_variables.allStockHistoryDict[key]
+                # 判断是否是首板(n天内)
+                if not stockUtil.calcIfWasHighLimit(stockHistory60Data,5):
+                    continue
                 # 判断当前股票是否濒临涨停（ask1在涨停价格上）
                 if not stockUtil.is_ask1_at_high_limit(stockData):
                     continue
@@ -175,9 +178,11 @@ def select_target_from_top100():
                 if not stockUtil.ask1_money_less_than_goal(stockData):
                     continue
                 # 判断量能是否温和放量
-                # if not stockUtil.is_moderate_volume(stockHistory60Data):
+                # if not stockUtil.is_moderate_volume(stockHistory60Data, 5):
                 #     continue
                 # TODO 判断过去n个交易日内，最高涨幅是否符合1.2倍-1.8倍的区间
+                # if not stockUtil.calcChangeRange(stockHistory60Data, 20):
+                #     continue
                 # TODO 判断当前股票当日内的开板次数
                 # TODO 判断当天价格是否是30日内的新高，如果不是，计算出与前高的差距
                 # TODO 判断板子上的封单数量是否满足，判断卖一是否金额小于500W
@@ -234,12 +239,12 @@ def select_target_from_top100():
                 # 判断是否在交易时间范围内
                 currentTime = datetime.datetime.now().strftime('%H%M%S')
                 if("093000" < currentTime < "113000") or ("130000" < currentTime < "145700"):
-                    # 计算买入数量（最大不超过1W）
-                    buyAmount = int((10000/alternativeStockPool.now)/100)*100
+                    # 计算买入数量（最大不超过2W）
+                    buyAmount = int((20000/alternativeStockPool.now)/100)*100
                     # 插入购买记录
                     # 查询当日是否已经购买该票
                     todayTradeRecords = tradeRecordService.getBuyRecords(datetime.datetime.now().strftime('%Y%m%d'),
-                                                                         stockData.stock_code)
+                                                                         stockData['code'])
                     # 模拟买入股票(如果今日已买，就忽略)
                     if todayTradeRecords.__len__() == 0:
                         buyStock(alternativeStockPool, buyAmount)
@@ -255,7 +260,7 @@ def select_target_from_top100():
 # 定时任务，自动执行卖操作
 def auto_sell():
     # 获取最新分时价格数据
-    while True:
+    while common_variables.homeThreadStatus:
         try:
             refreshTime = datetime.datetime.now()
             # 根据交易记录，刷新最新的持仓信息到数据库汇总
@@ -306,7 +311,7 @@ def start():
     if(now.weekday()==0):
         delta = datetime.timedelta(days=3)
     yesterday = (now - delta).strftime('%Y%m%d')
-    yesterday = '20230621'
+    # yesterday = '20230621'
 
     # 查询当前所有正常上市交易的股票列表ig507
     common_variables.stockCodeList = ig507Util.get_main_stock_list_from_ig507_suffix()

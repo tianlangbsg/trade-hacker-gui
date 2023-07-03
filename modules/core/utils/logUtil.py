@@ -116,31 +116,31 @@ log_error = logging.getLogger("log.error")
 # log_access = logging.getLogger("log.access")
 
 
-# def info(message):
-#     log_info.info(str(message))
-#
-#
-# def warning(message):
-#     log_warn.warning(str(message))
-#
-#
-# def error(message):
-#     log_error.error(str(message))
-
-
 def info(message):
     log_info.info(str(message))
-    refresh_home_info(message)
 
 
 def warning(message):
     log_warn.warning(str(message))
-    refresh_home_info(message)
 
 
 def error(message):
     log_error.error(str(message))
-    refresh_home_info(message)
+
+
+# def info(message):
+#     log_info.info(str(message))
+#     refresh_home_info(message)
+#
+#
+# def warning(message):
+#     log_warn.warning(str(message))
+#     refresh_home_info(message)
+#
+#
+# def error(message):
+#     log_error.error(str(message))
+#     refresh_home_info(message)
 
 
 def refresh_home_info(message):

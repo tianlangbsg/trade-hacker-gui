@@ -175,27 +175,57 @@ def calc_explosion_range(stockData):
     return round(100 * (close - limit_high) / limit_high, 2)
 
 
-# 判断量能是否温和放量
-def is_moderate_volume(stockHistory60Data):
+# 判断过去N天量能是否温和放量
+def is_moderate_volume(stockHistoryData, n):
     # 最低成交量
     minVol = 0
     # 最高成交量
     maxVol = 0
-    # 平均成交量
-    avgVol = 0
     # 总成交量
     totalVol = 0
 
-    for date in stockHistory60Data.keys():
-        curVol = stockHistory60Data[date]['vol']
+    dateList = list(stockHistoryData.keys())
+    # 取得最后几天的日期
+    lastDateList = dateList[0:n:1]
+    for date in lastDateList:
+        data = stockHistoryData[date]
+        curVol = data['vol']
         if curVol < minVol:
             minVol = curVol
         if curVol > maxVol:
             maxVol = curVol
         totalVol = totalVol + curVol
 
-    avgVol = totalVol / stockHistory60Data.keys().__len__()
-
-    # 计算最近60个交易日最高量最低量倍数
+    # 计算最近N个交易日最高量最低量倍数
     volumeRate = maxVol / minVol
-    return volumeRate < 4
+    return volumeRate < 5
+
+
+# 判断过去N天是否有涨停
+def calcIfWasHighLimit(stockHistoryData, n):
+    firstFlag = True
+    dateList = list(stockHistoryData.keys())
+    # 取得最后几天的日期
+    lastDateList = dateList[0:n:1]
+    for date in lastDateList:
+        data = stockHistoryData[date]
+        # 判断该票当天是否是存在过涨停
+        if data['high'] == data['limit_high']:
+            firstFlag = False
+
+    return firstFlag
+
+
+# 判断过去n个交易日内，最高涨幅是否符合1.2倍-1.8倍的区间 TODO
+def calcChangeRange(stockHistoryData, n):
+    firstFlag = True
+    dateList = list(stockHistoryData.keys())
+    # 取得最后几天的日期
+    lastDateList = dateList[0:n:1]
+    for date in lastDateList:
+        data = stockHistoryData[date]
+        # 判断该票当天是否是存在过涨停
+        if data['high'] == data['limit_high']:
+            firstFlag = False
+
+    return firstFlag

@@ -1,5 +1,7 @@
 import datetime
 
+# 趋势票回测
+
 # pyecharts引用
 from pyecharts import options as opts
 from pyecharts.charts import Bar, Grid, Line
@@ -47,36 +49,9 @@ closeHighLimitDict = {}
 # 存放历史跌停板数据
 lowLimitDict = {}
 
-# 判断过去N天是否有涨停
-def calcIfWasHighLimit(preDateList, historyDict):
-    firstFlag = True
-    for date in preDateList:
-        if historyDict.keys().__contains__(date):
-            data = historyDict[date]
-            # 判断该票当天是否是存在过涨停
-            if data['high'] == data['limit_high']:
-                firstFlag = False
-
-    return firstFlag
-
-# 存放前几天的日期，用来判断是否首板
-preDateList = []
-count = 0
-
 # 遍历所有股票数据
 for stockCode in allStockHistoryDict.keys():
     for date in allStockHistoryDict[stockCode].keys():
-        # 轮空前N天
-        if count < 5:
-            preDateList.append(date)
-            count = count + 1
-            continue
-
-        # 判断是否如果过去N天有过涨停
-        firstFlag = calcIfWasHighLimit(preDateList, allStockHistoryDict[stockCode])
-        # 如果过去N天有过涨停，就跳过
-        if not firstFlag:
-            continue
         # 取得该票每一天的数据
         data = allStockHistoryDict[stockCode][date]
         # 判断该票当天是否是涨停收盘
@@ -127,27 +102,12 @@ codeList = allStockHistoryDict.keys()
 
 preDate = None
 preData = {}
-
-preDateList = []  # 存放前几天的日期，用来判断是否首板
-count = 0
-
 # 遍历所有可用交易日期
 for date in dateList:
-    # 轮空前N天
-    if count < 5:
-        preDateList.append(date)
-        count = count + 1
-        continue
     # 遍历所有的股票代码
     for stockCode in codeList:
         # 取得该票当天的数据
         if allStockHistoryDict[stockCode].keys().__contains__(date):
-            # 判断是否是首板涨停
-            firstFlag = calcIfWasHighLimit(preDateList, allStockHistoryDict[stockCode])
-            # 如果不是首板，就跳过
-            if not firstFlag:
-                continue
-
             data = allStockHistoryDict[stockCode][date]
             # 判断当天的炸板率（判断前一天涨停板买入第二天收盘的差价）
             if data['limit_high'] == data['high'] and data['limit_high'] > data['close']:
@@ -164,8 +124,8 @@ for date in dateList:
                 analysisResult[date]['avg_explosion_range'] = round(
                     analysisResult[date]['total_explosion_range'] / analysisResult[date]['explosion_count'], 2)
                 # 平均封板炸板幅度统计
-                # analysisResult[date]['avg_all_explosion_range'] = round(
-                #     analysisResult[date]['total_explosion_range'] / analysisResult[date]['reach_high_limit_count'], 2)
+                analysisResult[date]['avg_all_explosion_range'] = round(
+                    analysisResult[date]['total_explosion_range'] / analysisResult[date]['reach_high_limit_count'], 2)
 
             # 取得该票前一天的数据，如果没有，则暂时不统计
             if preDate is not None and allStockHistoryDict[stockCode].keys().__contains__(preDate):
@@ -244,7 +204,6 @@ avg_limit_high_high_range_list = []  # 前一天涨停板买入第二天高点�
 avg_limit_high_low_range_list = []   # 前一天涨停板买入第二天低点的差价
 
 avg_limit_high_low_middle_range_list = []   # 前一天涨停板买入第二天高低点的中位数
-avg_all_explosion_range_list = []  # 平均封板炸板幅度统计
 
 for date in dateList:
     if analysisResult.keys().__contains__(date):
@@ -290,17 +249,13 @@ for date in dateList:
         else:
             avg_limit_high_low_range_list.append(0)
 
+
         # 前一天涨停板买入第二天低点的中位数
         if analysisResult[date].keys().__contains__('avg_limit_high_low_middle_range'):
             avg_limit_high_low_middle_range_list.append(analysisResult[date]['avg_limit_high_low_middle_range'])
         else:
             avg_limit_high_low_middle_range_list.append(0)
 
-        # 前一天涨停板买入平均炸板率统计
-        # if analysisResult[date].keys().__contains__('avg_all_explosion_range'):
-        #     avg_all_explosion_range_list.append(analysisResult[date]['avg_all_explosion_range'])
-        # else:
-        #     avg_all_explosion_range_list.append(0)
 
 #********************************************************************************
 # 使用pyecharts生成图表
@@ -323,21 +278,20 @@ bar = (
 line = (
     Line()
     .add_xaxis(columns)
-    .add_yaxis("首板涨停开盘", avg_limit_high_open_range_list)
-    .add_yaxis("首板涨停收盘", avg_limit_high_close_range_list)
-    .add_yaxis("首板涨停高点", avg_limit_high_high_range_list)
-    .add_yaxis("首板涨停低点", avg_limit_high_low_range_list)
-    .add_yaxis("首板涨停高低中位数", avg_limit_high_low_middle_range_list)
-    # .add_yaxis("平均炸板幅度统计", avg_all_explosion_range_list)
+    .add_yaxis("涨停开盘", avg_limit_high_open_range_list)
+    .add_yaxis("涨停收盘", avg_limit_high_close_range_list)
+    .add_yaxis("涨停高点", avg_limit_high_high_range_list)
+    .add_yaxis("涨停低点", avg_limit_high_low_range_list)
+    .add_yaxis("涨停高低中位数", avg_limit_high_low_middle_range_list)
     .set_global_opts(
-        title_opts=opts.TitleOpts(title="首板涨停趋势分析", pos_top="48%"),
+        title_opts=opts.TitleOpts(title="涨停趋势分析", pos_top="48%"),
         legend_opts=opts.LegendOpts(pos_top="48%"),
         xaxis_opts=opts.AxisOpts(name="日期", axislabel_opts={"rotate": 45}, splitline_opts=opts.SplitLineOpts( is_show=True ), ),
         yaxis_opts=opts.AxisOpts(name="日期", axislabel_opts={"rotate": 45}, splitline_opts=opts.SplitLineOpts(is_show=True), ),
     )
 )
 
-filePath = get_home_path() + "\\data\\analysis\\首板涨停趋势分析"+today+".html";
+filePath = get_home_path() + "\\data\\analysis\\涨停趋势分析"+today+".html";
 
 grid = (
     Grid(init_opts=opts.InitOpts(width=str(30*dayCount)+'px',height='900px'))

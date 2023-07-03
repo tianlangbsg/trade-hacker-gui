@@ -106,7 +106,7 @@ def refresh_trade_records_to_positions():
             else:
                 # 计算利润(清仓)
                 tradePosition.pl = (tradePosition.current_price - tradePosition.cost_price) * tradeRecord.trade_amount
-                tradePosition.latest_market_value = tradePosition.current_price * tradeRecord.trade_amount
+                tradePosition.latest_market_value = 0
                 tradePosition.pl_ration = tradePosition.pl / (tradePosition.cost_price * tradeRecord.trade_amount)
 
             tradePositionService.update(tradePosition)

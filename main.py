@@ -16,6 +16,7 @@ from modules import *
 from modules.core import stockHacker
 from modules.core.common import common_variables
 import modules.core.utils.logUtil as log
+from modules.core.simulationTrader.service import tradePositionService
 from modules.core.simulationTrader.service.tradeRecordService import getTodayRecords
 from modules.core.simulationTrader import tradeUtil
 from widgets import *
@@ -155,7 +156,7 @@ class MainWindow(QMainWindow):
                 # 刷新账户状态
                 self.refresh_account_status()
                 # 刷新持仓状态
-                # self.refresh_position()
+                self.refresh_position()
 
 
                 self.refreshStatus = True
@@ -321,8 +322,8 @@ class MainWindow(QMainWindow):
                 self.records_model.appendRow([QStandardItem(tradeRecord.stock_code),
                                       QStandardItem(tradeRecord.stock_name),
                                       QStandardItem(tradeRecord.detail),
-                                      QStandardItem(tradeRecord.trade_price),
-                                      QStandardItem(tradeRecord.trade_amount),
+                                      QStandardItem(str(tradeRecord.trade_price)),
+                                      QStandardItem(str(tradeRecord.trade_amount)),
                                       QStandardItem(str(tradeRecord.timestamp)[11: 19]),
                                       QStandardItem(tradeRecord.trade_type),
                                       QStandardItem(str(float(tradeRecord.trade_price)*float(tradeRecord.trade_amount)))
@@ -361,16 +362,16 @@ class MainWindow(QMainWindow):
 
     def refresh_account_status_data(self):
         try:
-
             # 计算账户信息表
             accountStatus = tradeUtil.refresh_account_status()
             # 刷新页面显示
-            self.ui.lbl_balance_value.setText(str(accountStatus.fund_balance))
+            self.ui.lbl_total_assets_value.setText(str(accountStatus.total_assets))
             self.ui.lbl_available_value.setText(str(accountStatus.fund_balance))
             self.ui.lbl_market_value_value.setText(str(accountStatus.stock_market_value))
             self.ui.lbl_profit_value.setText(str(accountStatus.position_profit_loss))
-            self.ui.lbl_today_profit_value.setText(str(accountStatus.position_profit_loss))
-            self.ui.lbl_today_profit_rate.setText(str(accountStatus.position_profit_loss_ratio)[0: 7])
+            self.ui.lbl_profit_ration_value.setText(str(accountStatus.position_profit_loss_ratio)[0: 7])
+            # self.ui.lbl_today_profit_value.setText(str(accountStatus.position_profit_loss))
+            # self.ui.lbl_today_profit_rate.setText(str(accountStatus.position_profit_loss_ratio)[0: 7])
 
         except Exception as ex:
             log.error('UI 账户状态刷新错误:' + ex.__str__())
@@ -379,61 +380,67 @@ class MainWindow(QMainWindow):
 
     # ///////////////////////////////////////////////////////////////
     # 刷新账户状态
-    # refresh_position_signal = Signal()
-    # refresh_position_timer = QTimer()
-    #
-    # def refresh_position(self):
-    #     try:
-    #         self.refresh_position_timer.timeout.connect(self.on_position_timeout)
-    #         # 定义刷新间隔
-    #         self.refresh_position_timer.start(5000)
-    #         # 关联刷新函数
-    #         self.refresh_position_signal.connect(self.refresh_position_data)
-    #     except Exception as ex:
-    #         log.error('UI 备选池刷新错误:' + ex.__str__())
-    #
-    # def on_position_timeout(self):
-    #     self.refresh_position_signal.emit()
-    #
-    # def refresh_position_data(self):
-    #     try:
-    #         self.position_model.clear()
-    #         self.position_model = QStandardItemModel(0, 0, self)
-    #
-    #         self.position_model.setHorizontalHeaderItem(0, QStandardItem("代码"))
-    #         self.position_model.setHorizontalHeaderItem(1, QStandardItem("名字"))
-    #         self.position_model.setHorizontalHeaderItem(2, QStandardItem("市值"))
-    #         self.position_model.setHorizontalHeaderItem(3, QStandardItem("盈亏"))
-    #         self.position_model.setHorizontalHeaderItem(4, QStandardItem("盈亏率"))
-    #         self.position_model.setHorizontalHeaderItem(5, QStandardItem("当日盈亏"))
-    #         self.position_model.setHorizontalHeaderItem(6, QStandardItem("当日盈亏率"))
-    #         self.position_model.setHorizontalHeaderItem(7, QStandardItem("持仓数量"))
-    #         self.position_model.setHorizontalHeaderItem(8, QStandardItem("可卖数量"))
-    #         self.position_model.setHorizontalHeaderItem(9, QStandardItem("成本"))
-    #         self.position_model.setHorizontalHeaderItem(10, QStandardItem("现价"))
-    #
-    #         # 从数据库取得当天交易记录
-    #         tradeRecordDict = getTodayRecords()
-    #
-    #         for key in tradeRecordDict.keys():
-    #             self.records_model.appendRow([QStandardItem(tradeRecordDict[key]['stock_code']),
-    #                                   QStandardItem(tradeRecordDict[key]['stock_name']),
-    #                                   QStandardItem(tradeRecordDict[key]['detail']),
-    #                                   QStandardItem(tradeRecordDict[key]['trade_price']),
-    #                                   QStandardItem(tradeRecordDict[key]['trade_amount']),
-    #                                   QStandardItem(str(tradeRecordDict[key]['timestamp'])[11: 19]),
-    #                                   QStandardItem(tradeRecordDict[key]['trade_type']),
-    #                                   QStandardItem(str(tradeRecordDict[key]['money'])),
-    #                                   ])
-    #
-    #         # 将数据模型绑定到QTableView
-    #         self.ui.tbv_trade_record.setModel(self.records_model)
-    #         # 设置列宽
-    #         for i in range(0,1):
-    #             self.ui.tbv_trade_record.setColumnWidth(i,80)
-    #
-    #     except Exception as ex:
-    #         log.error('UI 持仓状态刷新错误:' + ex.__str__())
+    refresh_position_signal = Signal()
+    refresh_position_timer = QTimer()
+
+    def refresh_position(self):
+        try:
+            self.position_model = QStandardItemModel()
+            self.ui.tbv_position.setModel(self.position_model)
+
+            self.refresh_position_timer.timeout.connect(self.on_position_timeout)
+            # 定义刷新间隔
+            self.refresh_position_timer.start(5000)
+            # 关联刷新函数
+            self.refresh_position_signal.connect(self.refresh_position_data)
+        except Exception as ex:
+            log.error('UI 备选池刷新错误:' + ex.__str__())
+
+    def on_position_timeout(self):
+        self.refresh_position_signal.emit()
+
+    def refresh_position_data(self):
+        try:
+            self.position_model.clear()
+            self.position_model = QStandardItemModel(0, 0, self)
+
+            self.position_model.setHorizontalHeaderItem(0, QStandardItem("代码"))
+            self.position_model.setHorizontalHeaderItem(1, QStandardItem("名字"))
+            self.position_model.setHorizontalHeaderItem(2, QStandardItem("市值"))
+            self.position_model.setHorizontalHeaderItem(3, QStandardItem("持仓数量"))
+            self.position_model.setHorizontalHeaderItem(4, QStandardItem("可卖数量"))
+            self.position_model.setHorizontalHeaderItem(5, QStandardItem("成本"))
+            self.position_model.setHorizontalHeaderItem(6, QStandardItem("现价"))
+            self.position_model.setHorizontalHeaderItem(7, QStandardItem("盈亏"))
+            self.position_model.setHorizontalHeaderItem(8, QStandardItem("盈亏率"))
+            self.position_model.setHorizontalHeaderItem(9, QStandardItem("当日盈亏"))
+            self.position_model.setHorizontalHeaderItem(10, QStandardItem("当日盈亏率"))
+
+            # 更新持仓中的实时价格和利润信息
+            tradePositionList = tradePositionService.getAll()
+            for tradePosition in tradePositionList:
+                self.position_model.appendRow([QStandardItem(str(tradePosition.stock_code)),
+                                              QStandardItem(str(tradePosition.stock_name)),
+                                              QStandardItem(str(tradePosition.latest_market_value)),
+                                              QStandardItem(str(tradePosition.total_amount)),
+                                              QStandardItem(str(tradePosition.can_sell_amount)),
+                                              QStandardItem(str(tradePosition.cost_price)),
+                                              QStandardItem(str(tradePosition.current_price)),
+                                              QStandardItem(str(tradePosition.pl)),
+                                              QStandardItem(str(tradePosition.pl_ration)),
+                                              QStandardItem(str(tradePosition.today_pl)),
+                                              QStandardItem(str(tradePosition.today_pl_ration)),
+                                              ])
+
+
+            # 将数据模型绑定到QTableView
+            self.ui.tbv_position.setModel(self.position_model)
+            # 设置列宽
+            for i in range(0,11):
+                self.ui.tbv_position.setColumnWidth(i,80)
+
+        except Exception as ex:
+            log.error('UI 持仓状态刷新错误:' + ex.__str__())
 
     # ///////////////////////////////////////////////////////////////
 
